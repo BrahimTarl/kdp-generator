@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kids Fact Book Builder - WonderDeck</title>
+    <title>WonderDeck KDP Generator</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts -->
@@ -49,14 +49,21 @@
     <div class="max-w-4xl mx-auto space-y-6">
         
         <!-- Header -->
-        <header class="text-center space-y-2">
-            <h1 class="text-2xl font-extrabold tracking-wider uppercase text-blue-400">Kids Fact Book Builder</h1>
-            <div class="flex justify-center gap-4 pt-2">
-                <!-- Tab Buttons -->
-                <button onclick="switchTab('concept')" id="tabConceptBtn" class="flex items-center gap-2 px-6 py-3 rounded-xl border border-accentPurple bg-accentPurple/20 text-white font-bold transition">
+        <header class="bg-cardBg p-6 rounded-2xl border border-accentBorder shadow-xl text-center space-y-3">
+            <div class="flex items-center justify-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accentPurple to-blue-500 flex items-center justify-center text-white text-xl font-bold">
+                    <i class="fa-solid fa-wand-magic-sparkles"></i>
+                </div>
+                <h1 class="text-2xl font-extrabold text-white tracking-wide">WonderDeck KDP Generator</h1>
+            </div>
+            <p class="text-xs text-purple-400 font-semibold">Pro Fact Book Creator & Prompt Studio for Amazon KDP</p>
+            
+            <!-- Navigation Tabs -->
+            <div class="flex justify-center gap-3 pt-2">
+                <button onclick="switchTab('concept')" id="tabConceptBtn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentPurple bg-accentPurple/20 text-white text-xs font-bold transition">
                     <i class="fa-solid fa-book-open"></i> 1. Story Concept
                 </button>
-                <button onclick="switchTab('visual')" id="tabVisualBtn" class="flex items-center gap-2 px-6 py-3 rounded-xl border border-accentBorder bg-cardBg text-gray-400 font-bold hover:text-white transition">
+                <button onclick="switchTab('visual')" id="tabVisualBtn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentBorder bg-inputBg text-gray-400 text-xs font-bold hover:text-white transition">
                     <i class="fa-solid fa-image"></i> 2. Visual Generator
                 </button>
             </div>
@@ -65,69 +72,127 @@
         <!-- TAB 1: STORY CONCEPT -->
         <div id="tabConcept" class="space-y-6">
             
-            <!-- Book Setup Controls -->
-            <div class="bg-cardBg p-6 rounded-2xl border border-accentBorder space-y-4">
-                <h2 class="text-sm font-bold text-gray-300 flex items-center gap-2 border-b border-accentBorder pb-3">
-                    <i class="fa-solid fa-sliders text-accentPurple"></i> Book Parameters
+            <!-- 1. Main Book Topic -->
+            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-3">
+                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-compass text-accentPurple"></i> Main Book Topic
+                </h2>
+                <div>
+                    <label class="block text-xs text-gray-400 font-medium mb-1.5">Topic / Niche</label>
+                    <input type="text" id="mainTopic" placeholder="e.g. Ocean Animals, Space Exploration, Dinosaurs..." value="Ocean Animals" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-accentPurple">
+                </div>
+            </div>
+
+            <!-- 2. Book Details -->
+            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
+                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-book text-blue-400"></i> Book Details
                 </h2>
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Topic / Niche</label>
-                        <input type="text" id="topic" value="Ocean Animals" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-accentPurple">
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Language</label>
-                        <select id="language" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-accentPurple">
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">🌐 Language</label>
+                        <select id="language" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
                             <option value="English" selected>English</option>
                             <option value="Arabic">العربية (Arabic)</option>
                             <option value="French">French</option>
                             <option value="Spanish">Spanish</option>
+                            <option value="German">German</option>
                         </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">👤 Author Name</label>
+                        <input type="text" id="authorName" placeholder="Leave blank for none" value="Lina Sparks" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Target Age</label>
-                        <select id="targetAge" class="w-full bg-inputBg border border-accentBorder rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="6-8" selected>6-8</option>
-                            <option value="3-5">3-5</option>
-                            <option value="9-12">9-12</option>
-                        </select>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">T Custom Title</label>
+                        <input type="text" id="customTitle" placeholder="Leave blank for AI choice" value="30 Amazing Facts About Ocean Animals for Kids" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
                     </div>
+
                     <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Facts Per Page</label>
-                        <select id="factsPerPage" class="w-full bg-inputBg border border-accentBorder rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="4" selected>4</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Total Pages</label>
-                        <select id="totalPages" class="w-full bg-inputBg border border-accentBorder rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="10">10</option>
-                            <option value="20">20</option>
-                            <option value="30" selected>30</option>
-                            <option value="50">50</option>
-                        </select>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">T Custom Subtitle</label>
+                        <input type="text" id="customSubtitle" placeholder="Leave blank for AI choice" value="Fun, Weird and True Facts About Sharks, Whales, Octopuses and More" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
                     </div>
                 </div>
-
-                <button onclick="generateStoryPrompt()" class="w-full py-4 bg-accentPurple hover:bg-purple-600 text-white font-extrabold rounded-2xl shadow-xl transition flex items-center justify-center gap-2 mt-4">
-                    <i class="fa-solid fa-rocket"></i>
-                    <span>GENERATE STORY PROMPT</span>
-                </button>
             </div>
 
-            <!-- Prompt Ready Output Box -->
-            <div id="storyPromptOutput" class="hidden bg-cardBg p-6 rounded-2xl border border-accentPurple space-y-4 text-center">
+            <!-- 3. Audience & Tone -->
+            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
+                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-sliders text-purple-400"></i> Audience & Tone
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">👨‍👩‍👧 Target Age</label>
+                        <select id="targetAge" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="✨ Auto (Let AI Decide)">✨ Auto (Let AI Decide)</option>
+                            <option value="3-5">3 - 5 years</option>
+                            <option value="6-8" selected>6 - 8 years</option>
+                            <option value="9-12">9 - 12 years</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">💬 Book Tone</label>
+                        <select id="bookTone" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="✨ Auto (Let AI Decide)" selected>✨ Auto (Let AI Decide)</option>
+                            <option value="Fun / Playful">Fun</option>
+                            <option value="Educational">Educational</option>
+                            <option value="Exciting">Exciting</option>
+                            <option value="Funny">Funny</option>
+                            <option value="Friendly">Friendly</option>
+                            <option value="Adventure">Adventure</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Book Structure -->
+            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
+                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Book Structure
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">📄 Facts Per Page</label>
+                        <select id="factsPerPage" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="1">1 Fact per page</option>
+                            <option value="2">2 Facts per page</option>
+                            <option value="3">3 Facts per page</option>
+                            <option value="4" selected>4 Facts per page</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">📚 Total Pages</label>
+                        <select id="totalPages" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="10">10 Pages</option>
+                            <option value="20">20 Pages</option>
+                            <option value="30" selected>30 Pages</option>
+                            <option value="50">50 Pages</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <button onclick="generateStoryPrompt()" class="w-full py-4 bg-gradient-to-r from-accentPurple to-blue-600 hover:opacity-95 text-white font-extrabold rounded-2xl shadow-xl transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-rocket"></i>
+                <span>GENERATE STORY PROMPT</span>
+            </button>
+
+            <!-- Output Prompt Box -->
+            <div id="storyPromptOutput" class="hidden bg-cardBg p-5 rounded-2xl border border-accentPurple space-y-4 text-center">
                 <h3 class="text-emerald-400 font-bold text-sm flex items-center justify-center gap-2">
                     <i class="fa-solid fa-circle-check"></i> Prompt Ready for ChatGPT!
                 </h3>
-                <textarea id="generatedPromptText" readonly class="w-full bg-inputBg p-3 rounded-xl border border-accentBorder text-xs font-mono text-gray-300 h-36 resize-none focus:outline-none leading-relaxed dir-ltr text-left"></textarea>
-                <button onclick="copyStoryPrompt()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2">
+                <textarea id="generatedPromptText" readonly class="w-full bg-inputBg p-3 rounded-xl border border-accentBorder text-xs font-mono text-gray-300 h-40 resize-none focus:outline-none leading-relaxed dir-ltr text-left"></textarea>
+                <button onclick="copyStoryPrompt()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2">
                     <i class="fa-regular fa-copy"></i>
                     <span id="copyStoryBtnText">COPY STORY PROMPT</span>
                 </button>
@@ -138,7 +203,7 @@
         <!-- TAB 2: VISUAL GENERATOR -->
         <div id="tabVisual" class="hidden space-y-6">
             
-            <div class="bg-cardBg p-6 rounded-2xl border border-accentBorder space-y-4">
+            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-3">
                 <label class="block text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-2">
                     <i class="fa-solid fa-paste"></i> Paste ChatGPT Story Here
                 </label>
@@ -146,7 +211,7 @@
             </div>
 
             <!-- Core Output Engine Options -->
-            <div class="bg-cardBg p-6 rounded-2xl border border-accentBorder space-y-4">
+            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
                 <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
                     <i class="fa-solid fa-sliders"></i> Core Output Engine (Crucial)
                 </h3>
@@ -192,40 +257,48 @@
                 document.getElementById('tabConcept').classList.remove('hidden');
                 document.getElementById('tabVisual').classList.add('hidden');
                 
-                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-accentPurple bg-accentPurple/20 text-white font-bold transition";
-                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-accentBorder bg-cardBg text-gray-400 font-bold hover:text-white transition";
+                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentPurple bg-accentPurple/20 text-white text-xs font-bold transition";
+                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentBorder bg-inputBg text-gray-400 text-xs font-bold hover:text-white transition";
             } else {
                 document.getElementById('tabConcept').classList.add('hidden');
                 document.getElementById('tabVisual').classList.remove('hidden');
 
-                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-emerald-500 bg-emerald-500/20 text-white font-bold transition";
-                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-accentBorder bg-cardBg text-gray-400 font-bold hover:text-white transition";
+                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-emerald-500 bg-emerald-500/20 text-white text-xs font-bold transition";
+                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentBorder bg-inputBg text-gray-400 text-xs font-bold hover:text-white transition";
             }
         }
 
         function generateStoryPrompt() {
-            const topic = document.getElementById('topic').value || "Ocean Animals";
+            const topic = document.getElementById('mainTopic').value || "Ocean Animals";
             const lang = document.getElementById('language').value;
+            const author = document.getElementById('authorName').value;
+            const title = document.getElementById('customTitle').value;
+            const subtitle = document.getElementById('customSubtitle').value;
             const age = document.getElementById('targetAge').value;
+            const tone = document.getElementById('bookTone').value;
             const facts = document.getElementById('factsPerPage').value;
             const pages = document.getElementById('totalPages').value;
 
-            const promptText = `You are an expert children's educational author.
+            let promptText = `You are an expert children's educational author.
 I need you to write a complete Fact Book based on this topic: "${topic}".
 CRITICAL: This is a FACT book. The content MUST be based on real science and accurate facts, but written in an extremely fun, engaging way for kids.
 
 STRICT GUIDELINES:
 - Language: ${lang}
 - Target Age: ${age}
-- Tone: Fun / Playful
-- Structure: ${pages} Pages total, exactly ${facts} facts per page.
+- Tone: ${tone}
+- Structure: ${pages} Pages total, exactly ${facts} facts per page.`;
 
-FORMATTING REQUIREMENTS:
+            if(author) promptText += `\n- Author Name: ${author}`;
+            if(title) promptText += `\n- Custom Title: "${title}"`;
+            if(subtitle) promptText += `\n- Custom Subtitle: "${subtitle}"`;
+
+            promptText += `\n\nFORMATTING REQUIREMENTS:
 Provide output formatted like this:
 
 [Cover Page]
-Title: ...
-Subtitle: ...
+Title: ${title || '...'}
+Subtitle: ${subtitle || '...'}
 
 [Back Cover]
 Blurb Text: ...
@@ -234,7 +307,6 @@ Visual Metaphor Idea: ...
 [PAGE 1]
 Facts:
 1. ...
-2. ...
 Visual Metaphor Idea: (Describe a vivid visual scene for this page)
 
 (Repeat for all pages up to [PAGE ${pages}])`;
