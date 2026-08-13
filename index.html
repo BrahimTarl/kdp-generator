@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kids Fact Book Builder - WonderDeck</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        darkBg: '#090D16',
+                        cardBg: '#131B2E',
+                        inputBg: '#0B101D',
+                        accentPurple: '#7C3AED',
+                        accentGreen: '#10B981',
+                        accentBorder: '#1E293B'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Cairo', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #090D16;
+            color: #F1F5F9;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track { background: #0B101D; }
+        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
+    </style>
+</head>
+<body class="p-4 md:p-8 min-h-screen">
+
+    <div class="max-w-4xl mx-auto space-y-6">
+        
+        <!-- Header -->
+        <header class="text-center space-y-2">
+            <h1 class="text-2xl font-extrabold tracking-wider uppercase text-blue-400">Kids Fact Book Builder</h1>
+            <div class="flex justify-center gap-4 pt-2">
+                <!-- Tab Buttons -->
+                <button onclick="switchTab('concept')" id="tabConceptBtn" class="flex items-center gap-2 px-6 py-3 rounded-xl border border-accentPurple bg-accentPurple/20 text-white font-bold transition">
+                    <i class="fa-solid fa-book-open"></i> 1. Story Concept
+                </button>
+                <button onclick="switchTab('visual')" id="tabVisualBtn" class="flex items-center gap-2 px-6 py-3 rounded-xl border border-accentBorder bg-cardBg text-gray-400 font-bold hover:text-white transition">
+                    <i class="fa-solid fa-image"></i> 2. Visual Generator
+                </button>
+            </div>
+        </header>
+
+        <!-- TAB 1: STORY CONCEPT -->
+        <div id="tabConcept" class="space-y-6">
+            
+            <!-- Book Setup Controls -->
+            <div class="bg-cardBg p-6 rounded-2xl border border-accentBorder space-y-4">
+                <h2 class="text-sm font-bold text-gray-300 flex items-center gap-2 border-b border-accentBorder pb-3">
+                    <i class="fa-solid fa-sliders text-accentPurple"></i> Book Parameters
+                </h2>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Topic / Niche</label>
+                        <input type="text" id="topic" value="Ocean Animals" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-accentPurple">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Language</label>
+                        <select id="language" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-accentPurple">
+                            <option value="English" selected>English</option>
+                            <option value="Arabic">العربية (Arabic)</option>
+                            <option value="French">French</option>
+                            <option value="Spanish">Spanish</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Target Age</label>
+                        <select id="targetAge" class="w-full bg-inputBg border border-accentBorder rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="6-8" selected>6-8</option>
+                            <option value="3-5">3-5</option>
+                            <option value="9-12">9-12</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Facts Per Page</label>
+                        <select id="factsPerPage" class="w-full bg-inputBg border border-accentBorder rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="4" selected>4</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Total Pages</label>
+                        <select id="totalPages" class="w-full bg-inputBg border border-accentBorder rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30" selected>30</option>
+                            <option value="50">50</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="generateStoryPrompt()" class="w-full py-4 bg-accentPurple hover:bg-purple-600 text-white font-extrabold rounded-2xl shadow-xl transition flex items-center justify-center gap-2 mt-4">
+                    <i class="fa-solid fa-rocket"></i>
+                    <span>GENERATE STORY PROMPT</span>
+                </button>
+            </div>
+
+            <!-- Prompt Ready Output Box -->
+            <div id="storyPromptOutput" class="hidden bg-cardBg p-6 rounded-2xl border border-accentPurple space-y-4 text-center">
+                <h3 class="text-emerald-400 font-bold text-sm flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-circle-check"></i> Prompt Ready for ChatGPT!
+                </h3>
+                <textarea id="generatedPromptText" readonly class="w-full bg-inputBg p-3 rounded-xl border border-accentBorder text-xs font-mono text-gray-300 h-36 resize-none focus:outline-none leading-relaxed dir-ltr text-left"></textarea>
+                <button onclick="copyStoryPrompt()" class="w-full py-3 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2">
+                    <i class="fa-regular fa-copy"></i>
+                    <span id="copyStoryBtnText">COPY STORY PROMPT</span>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- TAB 2: VISUAL GENERATOR -->
+        <div id="tabVisual" class="hidden space-y-6">
+            
+            <div class="bg-cardBg p-6 rounded-2xl border border-accentBorder space-y-4">
+                <label class="block text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-paste"></i> Paste ChatGPT Story Here
+                </label>
+                <textarea id="chatGptStoryInput" placeholder="Paste the text containing [Cover Page], [PAGE 1], [PAGE 2]... generated by ChatGPT here" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white h-44 focus:outline-none focus:border-emerald-400 resize-none font-mono leading-relaxed"></textarea>
+            </div>
+
+            <!-- Core Output Engine Options -->
+            <div class="bg-cardBg p-6 rounded-2xl border border-accentBorder space-y-4">
+                <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
+                    <i class="fa-solid fa-sliders"></i> Core Output Engine (Crucial)
+                </h3>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Interior Page Mode</label>
+                        <select id="interiorMode" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="Full Coloring (B&W)">Full Coloring (B&W)</option>
+                            <option value="Kids Scribble Color">Kids Scribble Color</option>
+                            <option value="Full Color Professional" selected>Full Color Professional</option>
+                        </select>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Cover Page Mode</label>
+                        <select id="coverMode" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
+                            <option value="Full Color Professional" selected>Full Color Professional</option>
+                            <option value="Glossy 3D Illustration">Glossy 3D Illustration</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button onclick="compileBookPrompts()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold rounded-2xl shadow-xl transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-cubes"></i>
+                    <span>COMPILE BOOK PROMPTS</span>
+                </button>
+            </div>
+
+            <!-- Compiled Cards Grid -->
+            <div id="compiledGrid" class="hidden space-y-4">
+                <h3 class="text-sm font-bold text-gray-200">Generated Page Prompts</h3>
+                <div id="cardsContainer" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        function switchTab(tab) {
+            if(tab === 'concept') {
+                document.getElementById('tabConcept').classList.remove('hidden');
+                document.getElementById('tabVisual').classList.add('hidden');
+                
+                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-accentPurple bg-accentPurple/20 text-white font-bold transition";
+                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-accentBorder bg-cardBg text-gray-400 font-bold hover:text-white transition";
+            } else {
+                document.getElementById('tabConcept').classList.add('hidden');
+                document.getElementById('tabVisual').classList.remove('hidden');
+
+                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-emerald-500 bg-emerald-500/20 text-white font-bold transition";
+                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-6 py-3 rounded-xl border border-accentBorder bg-cardBg text-gray-400 font-bold hover:text-white transition";
+            }
+        }
+
+        function generateStoryPrompt() {
+            const topic = document.getElementById('topic').value || "Ocean Animals";
+            const lang = document.getElementById('language').value;
+            const age = document.getElementById('targetAge').value;
+            const facts = document.getElementById('factsPerPage').value;
+            const pages = document.getElementById('totalPages').value;
+
+            const promptText = `You are an expert children's educational author.
+I need you to write a complete Fact Book based on this topic: "${topic}".
+CRITICAL: This is a FACT book. The content MUST be based on real science and accurate facts, but written in an extremely fun, engaging way for kids.
+
+STRICT GUIDELINES:
+- Language: ${lang}
+- Target Age: ${age}
+- Tone: Fun / Playful
+- Structure: ${pages} Pages total, exactly ${facts} facts per page.
+
+FORMATTING REQUIREMENTS:
+Provide output formatted like this:
+
+[Cover Page]
+Title: ...
+Subtitle: ...
+
+[Back Cover]
+Blurb Text: ...
+Visual Metaphor Idea: ...
+
+[PAGE 1]
+Facts:
+1. ...
+2. ...
+Visual Metaphor Idea: (Describe a vivid visual scene for this page)
+
+(Repeat for all pages up to [PAGE ${pages}])`;
+
+            document.getElementById('generatedPromptText').value = promptText;
+            document.getElementById('storyPromptOutput').classList.remove('hidden');
+        }
+
+        function copyStoryPrompt() {
+            const text = document.getElementById('generatedPromptText').value;
+            navigator.clipboard.writeText(text).then(() => {
+                const btnText = document.getElementById('copyStoryBtnText');
+                btnText.innerText = "COPIED TO CLIPBOARD!";
+                setTimeout(() => btnText.innerText = "COPY STORY PROMPT", 1500);
+            });
+        }
+
+        function compileBookPrompts() {
+            const storyText = document.getElementById('chatGptStoryInput').value;
+            const interiorMode = document.getElementById('interiorMode').value;
+            const coverMode = document.getElementById('coverMode').value;
+
+            if(!storyText.trim()) {
+                alert("Please paste the ChatGPT output text first!");
+                return;
+            }
+
+            const container = document.getElementById('cardsContainer');
+            container.innerHTML = '';
+
+            let stylePrefix = "Kids book illustration style, ";
+            if(interiorMode.includes("B&W")) stylePrefix = "Black and white coloring book page style, clean outline art, no color shading, ";
+            else if(interiorMode.includes("Professional")) stylePrefix = "Full color professional 3D digital illustration style, vibrant lighting, ";
+
+            // Generate Cover Card
+            createCard("COVER PAGE", `${stylePrefix} eye catching cover illustration for children book topic, ${coverMode} --ar 8.5:11`, container);
+
+            // Match pages from pasted text
+            const pageMatches = storyText.match(/\[PAGE\s*\d+\]/gi) || [];
+            const pageCount = pageMatches.length > 0 ? pageMatches.length : 10;
+
+            for(let i = 1; i <= pageCount; i++) {
+                const prompt = `${stylePrefix} page ${i} children illustration, cute ocean animals theme, highly detailed, clean background --ar 8.5:11`;
+                createCard(`PAGE ${i}`, prompt, container);
+            }
+
+            document.getElementById('compiledGrid').classList.remove('hidden');
+        }
+
+        function createCard(title, prompt, container) {
+            const card = document.createElement('div');
+            card.className = "bg-cardBg p-3 rounded-xl border border-accentBorder space-y-2 text-center flex flex-col justify-between";
+            card.innerHTML = `
+                <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded uppercase border border-emerald-500/20">${title}</span>
+                <button onclick="copyCardPrompt(\`${escapeStr(prompt)}\`, this)" class="w-full py-2 bg-accentPurple hover:bg-purple-600 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-1 mt-1">
+                    <i class="fa-regular fa-copy"></i> COPY
+                </button>
+            `;
+            container.appendChild(card);
+        }
+
+        function escapeStr(str) { return str.replace(/'/g, "\\'").replace(/"/g, '\\"'); }
+
+        function copyCardPrompt(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const orig = btn.innerHTML;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> COPIED`;
+                setTimeout(() => btn.innerHTML = orig, 1200);
+            });
+        }
+    </script>
+</body>
+</html>
