@@ -207,12 +207,9 @@
 <div class="max-w-5xl mx-auto">
     <!-- Header -->
     <header class="bg-gradient-to-r from-sky-700 to-cyan-800 text-white p-5 rounded-2xl shadow-lg text-center mb-6 no-print">
-        <div class="flex flex-wrap justify-between items-center gap-2 mb-2 border-b border-sky-500/50 pb-2">
-            <span class="bg-amber-400 text-slate-900 font-extrabold px-3 py-1 rounded-full text-xs">
+        <div class="flex flex-wrap justify-center items-center gap-2 mb-2 border-b border-sky-500/50 pb-2">
+            <span class="bg-amber-400 text-slate-900 font-extrabold px-4 py-1 rounded-full text-xs shadow-sm">
                 النسخة الرسمية المعتمدة 2026-2027 📜
-            </span>
-            <span class="bg-sky-900/80 text-amber-300 font-bold px-3 py-1 rounded-full text-xs border border-amber-400/30">
-                👨‍💻 تطوير: ذ. السبكي ابراهيم
             </span>
         </div>
         
@@ -449,11 +446,12 @@
             </div>
         </div>
 
-        <div class="bg-amber-50/80 border border-amber-200 p-4 rounded-xl mb-4 no-print">
+        <!-- Teacher Note Box (Dynamic: disappears on add student) -->
+        <div id="teacher-details-box" class="bg-amber-50/90 border-2 border-amber-300 p-4 rounded-xl mb-4 no-print hidden">
             <h3 class="font-bold text-amber-900 text-xs md:text-sm mb-1 flex items-center gap-1">
-                💡 دليل الأستاذ(ة) لموجبات موضعة التلاميذ (للعرض والتحليل فقط):
+                💡 دليل الأستاذ(ة) لموجبات موضعة التلميذ الحالي:
             </h3>
-            <div id="teacher-details-list" class="text-xs text-slate-700 space-y-1 max-h-40 overflow-y-auto pt-1">
+            <div id="teacher-details-list" class="text-xs text-slate-800 font-semibold pt-1">
             </div>
         </div>
 
@@ -483,12 +481,22 @@
             * الرمز (1) يعبر عن التحكم، والرمز (0) يعبر عن عدم التحكم، والرمز (-) يعني عدم خوض المرحلة بناءً على قرار شبكة الموضعة الرسمية.
         </div>
     </div>
+
+    <!-- Rights & Credits Footer -->
+    <footer class="mt-8 pt-4 border-t-2 border-sky-200 text-center text-xs text-slate-600 font-medium no-print">
+        <p class="font-semibold text-slate-700">جميع الحقوق محفوظة © الموسم الدراسي 2026-2027</p>
+        <p class="mt-1.5 flex justify-center items-center gap-3 flex-wrap">
+            <span class="bg-sky-100 text-sky-900 px-3 py-1 rounded-lg border border-sky-200 font-bold">
+                🛠️ المطور: ذ. السبكي ابراهيم
+            </span>
+            <span class="bg-amber-100 text-amber-900 px-3 py-1 rounded-lg border border-amber-200 font-bold">
+                💡 مساعدة: ذ. السلاوي الطيب
+            </span>
+        </p>
+    </footer>
 </div>
 
 <script>
-    // Database following rules:
-    // 1. Reading Text (text): fully diacritized.
-    // 2. Titles & Questions & Answers: NOT diacritized.
     const OFFICIAL_DATABASE = {
         short: [
             {
@@ -575,47 +583,44 @@
         long: [
             {
                 id: 1,
-                title: "النص المتوسط 1: الهاتف المحمول وآثاره",
-                text: "لَقَدْ بَاتَ الْهَاتِفُ الْمَحْمُولُ رَفِيقًا لَا يُفَارِقُ النَّاسَ. وَرَغْمَ فَوَائِدِهِ الْكَثِيرَةِ الَّتِي لَا حَصْرَ لَهَا فِي تَسْهِيلِ التَّوَاصُلِ الْبَشَرِيِّ وَتَقْرِيبِ الْمَسَافَاتِ، وَفَتْحِ آَفَاقٍ وَاسِعَةٍ لِلتَّعَلُّمِ وَالْبَحْثِ، إلَّا أَنَّ الْإِسْرَافَ فِي اسْتِخْدَامِهِ أَخْرَجَهُ مِنْ إِطَارِهِ كَأَدَاةٍ مُسَاعِدَةٍ، لِيُصْبِحَ خَطَرًا حَقِيقِيًّا يُهَدِّدُ صِحَّةَ الْأَفْرَادِ وَمُسْتَقْبَلَهُمْ. إنَّ الاِسْتِخْدَامَ الْمُفْرِطَ لِلْهَاتِفِ الْمَحْمُولِ يُسَبِّبُ أَضْرَارًا عَدِيدَةً، مِنْ أَبْرَزِهَا التَّأْثِيرُ السَّلْبِيُّ فِي التَّحْصِيلِ الدِّرَاسِيِّ، فَالْاِنْشِغَالُ الدَّائِمُ بِهِ يُؤَدِّي إِلَى تَشَتُّتِ الاِنْتِبَاهِ وَضَعْفِ التَّرْكِيزِ دَاخِلَ الْفُصُولِ الدِّرَاسِيَّةِ، كَمَا يُسَبِّبُ مُشْكِلَاتٍ صِحِّيَّةً مُتَعَدِّدَةً، مِثْلَ إِجْهَادِ الْعَيْنَيْنِ وَجَفَافِهِمَا، إِضَافَةً إِلَى آَلَامِ الرَّقَبَةِ وَالْعَمُودِ الْفِقَرِيِّ، وَالْأَرَقِ. كَمَا يُؤَدِّي الإِفْرَاطُ فِي اسْتِعْمَالِهِ إِلَى الْعُزْلَةِ الاِجْتِمَاعِيَّةِ، وَذَلِكِ لِأَنَّ الْاِنْغِمَاسَ فِي الْعَالَمِ الاِفْتِرَاضِيِّ يُضْعِفُ مَهَارَاتِ التَّوَاصُلِ الْمُبَاشِرِ، وَيُقَلِّلُ مِنَ التَّفَاعُلِ الإِيجَابِيِّ مَعَ أَفْرَادِ الْأُسْرَةِ وَالْمُجْتَمَعِ. وَلِلْحَدِّ مِنْ هَذِهِ الْآَثَارِ السَّلْبِيَّةِ، يَنْبَغِي تَحْدِيدُ أَوْقَاتٍ مُعَيَّنَةٍ لاِسْتِخْدَامِ الْهَاتِفِ. كَمَا يُنْسَحُ بِاسْتِثْمَارِ أَوْقَاتِ الْفَرَاغِ فِي أَنْشِطَةٍ وَهِوَايَاتٍ مُفِيدَةٍ، كَمُمَارَسَةِ الرِّيَاضَةِ، وَالْقِرَاءَةِ، وَتَعَلُّمِ مَهَارَاتٍ جَدِيدَةٍ.",
+                title: "النص المتوسط 1: قلعة مكونة",
+                text: "تُعَدُّ قَلْعَةُ مَكُونَةَ بِمِنْطَقَةِ دَادَسَ شَاهِدًا حَيًّا عَلَى غِنَى التَّارِيخِ وَأَصَالَتِهِ. فَقَدْ بُنِيَتْ فِي مَوْقِعٍ اسْتِرَاتِيجِيٍّ يُمَكِّنُ مِنْ حِمَايَةِ المِنْطَقَةِ وَمُرَاقَبَةِ الطُّرُقِ التِّجَارِيَّةِ، وَمَعَ مُرُورِ الزَّمَنِ، أَصْبَحَتْ هَذِهِ القَلْعَةُ مَرْكَزًا حَضَارِيًّا وَتَارِيخِيًّا يَقْصِدُهُ الزُّوَّارُ. وَلَمْ تَكُنِ القَلْعَةُ مُجَرَّدَ حِصْنٍ عَسْكَرِيٍّ، بَلْ كَانَتْ أَيْضًا مَكَانًا لِلتَّفَاعُلِ الثَّقَافِيِّ وَالاِقْتِصَادِيِّ، حَيْثُ الْتَقَتْ فِيهَا حَضَارَاتٌ مُخْتَلِفَةٌ تَرَكَتْ بَصَمَاتٍ وَاضِحَةً فِي طِرَازِهَا المِعْمَارِيِّ وَأَسْوَارِهَا الضَّخْمَةِ. وَاليَوْمَ، تُعْتَبَرُ قَلْعَةُ مَكُونَةَ مِنْ أَهَمِّ المَعَالِمِ الأَثَرِيَّةِ الَّتِي تَحْفَظُ ذَاكِرَةَ المِنْطَقَةِ، وَتُعَبِّرُ عَنْ عُمْقِ التُّرَاثِ المَغْرِبِيِّ وَتَنَوُّعِهِ، مِمَّا يَجْعَلُهَا مَقْصِدًا لِلْبَاحِثِينَ وَعُشَّاقِ التَّارِيخِ.",
                 targetWords: 90,
                 questions: [
-                    { id: 1, text: "1. اذكر فوائد الهاتف المحمول التي ذكرها الكاتب؟ (سؤال مفتوح)", answer: "تسهيل التواصل البشري وتقريب المسافات، وفتح آفاق واسعة للتعلم والبحث." },
-                    { id: 2, text: "2. ما أبرز الأضرار الصحية الناتجة عن الإفراط في استخدام الهاتف؟ (سؤال مفتوح)", answer: "إجهاد العينين وجفافهما، آلام الرقبة والعمود الفقري، والأرق." },
-                    { id: 3, text: "3. كيف يمكن الحد من سلبيات الهاتف المحمول، حسب النص؟ (سؤال مفتوح)", answer: "تحديد أوقات معينة لاستخدامه، واستثمار أوقات الفراغ في أنشطة وهوايات مفيدة." },
-                    { id: 4, text: "4. ما سبب تراجع المهارات الاجتماعية لدى الأفراد، وفق النص؟ اختر الجواب الصحيح.", answer: "الانغماس في العالم الافتراضي وضعف التواصل المباشر", options: ["الانغماس في العالم الافتراضي وضعف التواصل المباشر", "كثرة ممارسة الأنشطة الرياضية والاجتماعية", "الاهتمام بالقراءة وتعلم مهارات جديدة", "تنظيم أوقات استخدام الهاتف المحمول"] },
-                    { id: 5, text: "5. ما العلاقة بين الاستخدام المفرط للهاتف وضعف التحصيل الدراسي؟ اختر الجواب الصحيح.", answer: "يؤدي إلى تشتت الانتباه وضعف التركيز داخل الفصول الدراسية", options: ["يؤدي إلى تشتت الانتباه وضعف التركيز داخل الفصول الدراسية", "يؤدي إلى إجهاد العينين وآلام الرقبة", "يؤدي إلى الأرق", "يؤدي إلى العزلة الاجتماعية وقلة التفاعل مع الأسرة والمجتمع"] }
+                    { id: 1, text: "1. أين تقع قلعة مكونة؟ (سؤال مفتوح)", answer: "تقع بمنطقة دادس." },
+                    { id: 2, text: "2. ما الغرض من بناء قلعة مكونة في بداية أمرها؟ (سؤال مفتوح)", answer: "حماية المنطقة ومراقبة الطرق التجارية." },
+                    { id: 3, text: "3. اذكر فائدة واحدة للقلعة غير الدور العسكري. (سؤال مفتوح)", answer: "مكان للتفاعل الثقافي والاقتصادي / التقاء حضارات مختلفة / حفظ ذاكرة المنطقة والتراث المغربي." },
+                    { id: 4, text: "4. ما الذي تركته الحضارات المختلفة في قلعة مكونة؟ اختر الجواب الصحيح.", answer: "بصمات واضحة في طرازها المعماري وأسوارها الضخمة", options: ["بصمات واضحة في طرازها المعماري وأسوارها الضخمة", "كتابات أثرية على الصخور", "أدوات فلاحية قديمة", "نقوشاً ذهبية على الجدران"] },
+                    { id: 5, text: "5. تعتبر قلعة مكونة اليوم قصداً لـ: اختر الجواب الصحيح.", answer: "الباحثين وعشاق التاريخ", options: ["الباحثين وعشاق التاريخ", "التجار والصناع", "الفلاحين والمهندسين", "المسافرين والسياح الأجانب فقط"] }
                 ]
             },
             {
                 id: 2,
-                title: "النص المتوسط 2: الذكاء الاصطناعي وتحدياته",
-                text: "يَشْهَدُ الْعَالَمُ حَالِيًّا ثَوْرَةً تِكْنُولُوجِيَّةً هَائِلَةً بِسَبَبِ الذَّكَاءِ الاِصْطِنَاعِيِّ، الَّذِي أَصْبَحَ جُزْءًا لا يَتَجَزَّأُ مِنْ حَيَاتِنَا الْيَوْمِيَّةِ، بَدْءًا مِنَ الْهَوَاتِفِ الذَّكِيَّةِ، وَوُصُولاً إِلى الْمُؤَسَّسَاتِ الصِّنَاعِيَّةِ وَالطِّبِّيَّةِ. فَقَدْ أَصْبَحَتِ الآلاتُ وَالْبَرَامِجُ الذَّكِيَّةُ قَادِرَةً عَلَى تَحْلِيلِ الْبَيَانَاتِ الضَّخْمَةِ بِسُرْعَةٍ فَائِقَةٍ، وَاتِّخَاذِ قَرَارَاتٍ دَقِيقَةٍ كَانَتْ تَتَطَلَّبُ سَابِقًا عُقُودًا مِنَ الْجُهْدِ الْبَشَرِيِّ. إنَّ الذَّكَاءَ الاِصْطِنَاعِيَّ يُقَدِّمُ حُلُولاً ذَكِيَّةً تُسَاهِمُ فِي تَحْسِينِ جَوْدَةِ الْحَيَاةِ، بَيْدَ أَنَّهُ يَتَطَلَّبُ فِي الْوَقْتِ نَفْسِهِ بِنَاءَ إِطَارٍ أِخْلَاقِيٍّ لِضَمَانِ اسْتِخْدَامِهِ بِمَسْؤُولِيَّةٍ. فالْمَخَاوِفُ المَرْتَبِطَةُ بِفِقْدَانِ بَعْضِ الْوَظَائِفِ التَّقْلِيدِيَّةِ وَانْتِهَاكِ الخُصُوصِيَّةِ تُشَكِّلُ تَحَدِّيًّا كَبِيرًا لا يُسْتَهَانُ بِهِ. ومِنْ ثَمَّ فَإنَّ التَّحَدِّيَ الْحَقِيقِيَّ لا يَكْمُنُ فِي مُوَاجَهَةِ هَذِهِ التِّقْنِيَةِ الشَّهِيَرَةِ، بَلْ فِي الاِسْتِفَادَةِ مِنْهَا، مَعَ الْحِفَاظِ عَلَى القِيَمِ الإِنْسَانِيَّةِ وَالحُقُوقِ الأَسَاسِيَّةِ. وَفِي الخِتَامِ، يُمْكِنُ القَوْلُ إنَّ الذَّكَاءَ الاِصْطِنَاعِيَّ لَيْسَ بَدِيلاً عَنِ العَقْلِ البَشَرِيِّ، بَلْ هُوَ أَدَاةٌ مُكَمِّلَةٌ لَهُ، وَالنَّجَاحُ فِي مُسْتَقْبَلِ هَذَا العَالَمِ المُرْتَبِطِ بِالتِّقْنِيَةِ يَتَطَلَّبُ التَّعَلُّمَ الْمُسْتَمِرَّ وَمُوَابَكَةَ التَّطَوُّرِ.",
+                title: "النص المتوسط 2: سد المنصور الذهبي",
+                text: "يُعَدُّ سَدُّ المَنْصُورِ الذَّهَبِيِّ بِمَدِينَةِ وَرْزَزَاتَ إِحْدَى أَهَمِّ المُنْشَآتِ المَائِيَّةِ فِي المَغْرِبِ، إِذْ يَلْعَبُ دَوْرًا حَاسِمًا فِي تَنْمِيَةِ المِنْطَقَةِ وَحِمَايَتِهَا مِنَ الجَفَافِ. وَقَدْ أُقِيمَ هَذَا السَّدُّ لِتَخْزِينِ المِيَاهِ القَادِمَةِ مِنْ وِادِي دَادَسَ وَوِادِي دَرْعَةَ، ثُمَّ إِعَادَةِ تَوُزِيعِهَا لِسَقْيِ الأَرَاضِي الزِّرَاعِيَّةِ الشَّاسِعَةِ الَّتِي تُعْتَبَرُ المَصْدَرَ الأَسَاسِيَّ لِعَيْشِ السُّكَّانِ. وَلاَ يَقْتَصِرُ دَوْرُ السَّدِّ عَلَى الفِلاَحَةِ، بَلْ يُسْهِمُ أَيْضًا فِي تَولِيدِ الطَّاقَةِ الكَهْرُومَائِيَّةِ، وَتَوْفِيرِ المِيَاهِ الصَّالِحَةِ لِلشُّرْبِ لِلسَّاكِنَةِ المَحَلِّيَّةِ. كَمَا أَنَّ المِحِيطَ المَائِيَّ لِلسَّدِّ أَصْبَحَ مَلاَذًا لِلْعَدِيدِ مِنَ الطُّيُورِ المُهَاجِرَةِ، مِمَّا جَعَلَهُ مَوْقِعًا إِيكُولُوجِيًّا مُمَيَّزًا يَجْذِبُ الزُّوَّارَ وَعُشَّاقَ الطَّبِيعَةِ. وَبِفَضْلِ هَذَا السَّدِّ، اسْتَطَاعَتِ المِنْطَقَةُ التَّغَلُّبَ عَلَى قَسْوَةِ المَنَاخِ وَتَحْقِيقَ اسْتِقْرَارٍ فِلاَحِيٍّ وَاِقْتِصَادِيٍّ لِسُكَّانِهَا.",
                 targetWords: 90,
                 questions: [
-                    { id: 1, text: "1. كيف أصبح الذكاء الاصطناعي جزءا لا يتجزأ من حياتنا اليومية؟ (سؤال مفتوح)", answer: "بدءا من الهواتف الذكية ووصولا إلى المؤسسات الصناعية والطبية، وقدرة البرامج على تحليل البيانات الضخمة." },
-                    { id: 2, text: "2. اذكر بعض المخاوف المرتبطة باستخدام الذكاء الاصطناعي؟ (سؤال مفتوح)", answer: "فقدان بعض الوظائف التقليدية وانتهاك الخصوصية." },
-                    { id: 3, text: "3. كيف يمكن للإنسان النجاح في مستقبل عالم التقنية؟ (سؤال مفتوح)", answer: "يتطلب التعلم المستمر ومواكبة التطور." },
-                    { id: 4, text: "4. ما التحدي الحقيقي الذي يواجه الإنسان أمام الذكاء الاصطناعي؟ اختر الجواب الصحيح.", answer: "الاستفادة منه مع الحفاظ على القيم الإنسانية والحقوق الأساسية", options: ["التوقف عن استخدام هذه التقنية", "الاستفادة منه مع الحفاظ على القيم الإنسانية والحقوق الأساسية", "الاعتماد الكلي عليه دون ضوابط", "منع برمجة الآلات الذكية"] },
-                    { id: 5, text: "5. كيف ينظر الكاتب إلى الذكاء الاصطناعي في ختام النص؟ اختر الجواب الصحيح.", answer: "أداة مكملة للعقل البشري", options: ["أداة مكملة للعقل البشري", "بديل كامل عن العقل البشري", "تقنية مؤقتة وستختفي بسرعة", "خطر ينبغي تجنبه بالكامل"] }
+                    { id: 1, text: "1. أين يقع سد المنصور الذهبي؟ (سؤال مفتوح)", answer: "يقع بمدينة ورززات." },
+                    { id: 2, text: "2. ما الغرض الأساسي من إقامة سد المنصور الذهبي؟ (سؤال مفتوح)", answer: "لتخزين المياه القادمة من وادي دادس ووادي درعة وإعادة توزيعها لسقي الأراضي الزراعية وحماية المنطقة من الجفاف." },
+                    { id: 3, text: "3. اذكر فائدتين للسد غير سقي الأراضي الزراعية. (سؤال مفتوح)", answer: "توليد الطاقة الكهرومائية وتوفير المياه الصالحة للشرب / ملتقى وملاذ للطيور المهاجرة." },
+                    { id: 4, text: "4. ما الوديان التي تجمع مياهها في سد المنصور الذهبي؟ اختر الجواب الصحيح.", answer: "وادي دادس ووادي درعة", options: ["وادي دادس ووادي درعة", "وادي سوس ووادي ملوية", "وادي أم الربيع ووادي سبو", "وادي أبي رقراق ووادي لكسوس"] },
+                    { id: 5, text: "5. أصبح المحيط المائي لسد المنصور الذهبي ملاذا لـ: اختر الجواب الصحيح.", answer: "الطيور المهاجرة", options: ["الطيور المهاجرة", "الحيوانات المفترسة", "الأسماك النادرة فقط", "المواشي والأغنام"] }
+                ]
+            },
+            {
+                id: 3,
+                title: "النص المتوسط 3: المدينة العتيقة لمكناس",
+                text: "تُعَدُّ المَدِينَةُ العَتِيقَةُ لِمَكْنَاسَ إِحْدَى جَوَاهِرِ التُّراَثِ المَغْرِبِيِّ، حَيْثُ تَجْمَعُ بَيْنَ عَرَاَقَةِ التَّارِيخِ وَجَمَالِ العِمَارَةِ الإِسْلاَمِيَّةِ. تَأَسَّسَتْ هَذِهِ المَدِينَةُ عَلَى يَدِ المُرَابِطِينَ فِي القَرْنِ الحَادِيَ عَشَرَ، ثُمَّ شَهِدَتْ أَوْجَ اِزْدِهَارِهَا فِي عَهْدِ المَوْلَى إِسْمَاعِيلَ الَّذِي جَعَلَهَا عَاصِمَةً لِلْمَمْلَكَةِ، وَشَيَّدَ فِيهَا الأَسْوَارَ العَالِيَةَ وَالأَبْوَابَ الضَّخْمَةَ، مِثْلَ بَابِ المَنْصُورِ العَلْجِ، الَّذِي يُعَدُّ مِنْ أَجْمَلِ الأَبْوَابِ فِي التَّارِيخِ. وَتَتَمَيَّزُ المَدِينَةُ العَتِيقَةُ بِأَزِقَّتِهَا الضَّيِّقَةِ وَأَسْوَاقِهَا التَّقْلِيدِيَّةِ المَمْلُؤَةِ بِالصِّنَاعَاتِ الحِرَفِيَّةِ، كَالنَّحَاسِيَّاتِ وَالخَزَفِ وَالزَّرَابِيِّ، مِمَّا يَعْكِسُ مَهَارَةَ الصَّانِعِ المَغْرِبِيِّ. وَلِهَذَا صُنِّفَتْ مَكْنَاسُ تُرَاثًا عَالَمِيًّا مِنْ طَرَفِ المُنَظَّمَةِ الدَّوْلِيَّةِ (اليُونِسْكُو)، وَأَصْبَحَتْ وُجْهَةً مُفَضَّلَةً لِلسُّيَّاحِ مِنْ مُخْتَلِفِ أَنْحَاءِ العَالَمِ لِلاِسْتِمْتَاعِ بِسِحْرِهَا التَّارِيخِيِّ.",
+                targetWords: 90,
+                questions: [
+                    { id: 1, text: "1. متى تأسست المدينة العتيقة لمكناس؟ وعلى يد من؟ (سؤال مفتوح)", answer: "تأسست في القرن الحادي عشر على يد المرابطين." },
+                    { id: 2, text: "2. من هو السلطان الذي جعل مكناس عاصمة وشيد أسوارها وأبوابها؟ (سؤال مفتوح)", answer: "المولى إسماعيل." },
+                    { id: 3, text: "3. اذكر مظهرين من مظاهر الأصالة بالمدينة العتيقة لمكناس. (سؤال مفتوح)", answer: "أزقتها الضيقة، أسواقها التقليدية، الصناعات الحرفية (النحاسيات، الخزف، الزرابي)، أبوابها الضخمة كباب المنصور العلج." },
+                    { id: 4, text: "4. ما المعلمة التاريخية البارزة التي شيدت بمدينة مكناس والمذكورة في النص؟ اختر الجواب الصحيح.", answer: "باب المنصور العلج", options: ["باب المنصور العلج", "باب أگناو", "صومعة حسان", "قصر البديع"] },
+                    { id: 5, text: "5. تم تصنيف المدينة العتيقة لمكناس تراثاً عالمياً من طرف: اختر الجواب الصحيح.", answer: "منظمة اليونسكو", options: ["منظمة اليونسكو", "منظمة الأليسكو", "منظمة الإيسيسكو", "وزارة الثقافة المغربية"] }
                 ]
             }
         ]
-    };
-
-    // Official Stages Flow Protocol:
-    // STAGE 1: LTC (Short text fluency) - Mandatory for ALL
-    // -> If LTC = 0 => STAGE 3: LP (Paragraph fluency) -> STAGE 4: CP (Paragraph comp) => STOP (Level 1)
-    // -> If LTC = 1 => STAGE 2: CTC (Short text comp)
-    //    -> If CTC = 0 => STOP (Level 1)
-    //    -> If CTC = 1 => STAGE 5: LTM (Medium text fluency) -> STAGE 6: CTM (Medium text comp) => Level 2 or Level 3
-    
-    const STAGE_CONFIG = {
-        LTC: { stageNum: 1, title: "المرحلة 1: الطلاقة على مستوى النص القصير (LTC)", dbKey: "short", type: "fluency", targetWords: 80, code: "LTC" },
-        CTC: { stageNum: 2, title: "المرحلة 2: الفهم على مستوى النص القصير (CTC)", dbKey: "short", type: "comprehension", code: "CTC" },
-        LP:  { stageNum: 3, title: "المرحلة 3: الطلاقة على مستوى الفقرة (LP)", dbKey: "paragraph", type: "fluency", targetWords: 70, code: "LP" },
-        CP:  { stageNum: 4, title: "المرحلة 4: الفهم على مستوى الفقرة (CP)", dbKey: "paragraph", type: "comprehension", code: "CP" },
-        LTM: { stageNum: 5, title: "المرحلة 5: الطلاقة على مستوى النص المتوسط (LTM)", dbKey: "long", type: "fluency", targetWords: 90, code: "LTM" },
-        CTM: { stageNum: 6, title: "المرحلة 6: الفهم على مستوى النص المتوسط (CTM)", dbKey: "long", type: "comprehension", code: "CTM" }
     };
 
     let studentsList = [];
@@ -625,61 +630,7 @@
     let timerInterval = null;
     let timerSeconds = 60;
     let currentQuestionsState = [];
-
-    window.onload = function() {
-        loadSavedData();
-        renderCollectiveGrid();
-    };
-
-    function loadSavedData() {
-        try {
-            const savedStudents = localStorage.getItem('ar_tarl_students_2026');
-            if (savedStudents) {
-                studentsList = JSON.parse(savedStudents);
-            }
-            
-            const savedHeader = localStorage.getItem('ar_tarl_school_info');
-            if (savedHeader) {
-                const h = JSON.parse(savedHeader);
-                if (h.dir) document.getElementById('info-directorate-main').value = h.dir;
-                if (h.sch) document.getElementById('info-school-main').value = h.sch;
-                if (h.tch) document.getElementById('info-teacher-main').value = h.tch;
-                updateHeaderDisplays();
-            }
-        } catch (e) {
-            console.error("Error loading localStorage:", e);
-        }
-    }
-
-    function updateSchoolInfoFromMain(val, field) {
-        let savedHeader = JSON.parse(localStorage.getItem('ar_tarl_school_info') || '{}');
-        savedHeader[field] = val;
-        localStorage.setItem('ar_tarl_school_info', JSON.stringify(savedHeader));
-        updateHeaderDisplays();
-    }
-
-    function updateHeaderDisplays() {
-        const dir = document.getElementById('info-directorate-main').value || 'غير محددة';
-        const sch = document.getElementById('info-school-main').value || 'غير محددة';
-        const tch = document.getElementById('info-teacher-main').value || 'غير محدد';
-
-        document.getElementById('main-header-school-info').textContent = `🏫 ${sch} | 📍 ${dir} | 👨‍🏫 الأستاذ(ة): ${tch}`;
-        document.getElementById('print-header-dir').textContent = `المديرية الإقليمية: ${dir}`;
-        document.getElementById('print-header-sch').textContent = `المؤسسة: ${sch}`;
-        document.getElementById('print-header-tch').textContent = `الأستاذ(ة): ${tch}`;
-    }
-
-    function toggleHeaderPanel() {
-        const panel = document.getElementById('header-custom-panel');
-        const icon = document.getElementById('panel-toggle-icon');
-        if (panel.classList.contains('hidden')) {
-            panel.classList.remove('hidden');
-            icon.textContent = '▼ إخفاء';
-        } else {
-            panel.classList.add('hidden');
-            icon.textContent = '▼ تعديل المعطيات';
-        }
-    }
+    let lastEvaluatedNote = ''; // Holds only the latest evaluated note
 
     function addNewStudent() {
         document.getElementById('student-setup').classList.remove('hidden');
@@ -687,6 +638,12 @@
         document.getElementById('collective-grid-view').classList.add('hidden');
         document.getElementById('student-name').value = '';
         document.getElementById('name-error').classList.add('hidden');
+        
+        // Reset teacher note when adding new student
+        lastEvaluatedNote = '';
+        document.getElementById('teacher-details-list').innerHTML = '';
+        document.getElementById('teacher-details-box').classList.add('hidden');
+
         currentStudent = null;
     }
 
@@ -1038,18 +995,14 @@
         currentStudent.finalLevel = level;
         currentStudent.finalReason = reason;
 
+        // Store note for current student only
+        lastEvaluatedNote = `📌 <strong>${currentStudent.name} (${currentStudent.studentClass})</strong>: ${reason}`;
+
         const idx = studentsList.findIndex(s => s.id === currentStudent.id);
         if (idx >= 0) studentsList[idx] = currentStudent;
 
         localStorage.setItem('ar_tarl_students_2026', JSON.stringify(studentsList));
         showCollectiveGridDirectly();
-    }
-
-    function showCollectiveGridDirectly() {
-        document.getElementById('student-setup').classList.add('hidden');
-        document.getElementById('assessment-view').classList.add('hidden');
-        document.getElementById('collective-grid-view').classList.remove('hidden');
-        renderCollectiveGrid();
     }
 
     function renderCollectiveGrid() {
@@ -1073,8 +1026,17 @@
         document.getElementById('stat-ltm').textContent = filtered.filter(s => s.scores.LTM === 1).length;
         document.getElementById('stat-ctm').textContent = filtered.filter(s => s.scores.CTM === 1).length;
 
+        // Teacher Note Box rendering
+        const teacherBox = document.getElementById('teacher-details-box');
         const teacherList = document.getElementById('teacher-details-list');
-        teacherList.innerHTML = '';
+
+        if (lastEvaluatedNote) {
+            teacherList.innerHTML = lastEvaluatedNote;
+            teacherBox.classList.remove('hidden');
+        } else {
+            teacherList.innerHTML = '';
+            teacherBox.classList.add('hidden');
+        }
 
         if (filtered.length === 0) {
             tbody.innerHTML = `<tr><td colspan="11" class="py-6 text-slate-400 font-semibold text-center">لا توجد بيانات مسجلة حتى الآن. انقر على "إضافة تلميذ جديد" لبدء التقييم.</td></tr>`;
@@ -1108,11 +1070,6 @@
                 </td>
             `;
             tbody.appendChild(tr);
-
-            const noteDiv = document.createElement('div');
-            noteDiv.className = 'border-b border-amber-200/60 pb-1';
-            noteDiv.innerHTML = `📌 <strong>${student.name} (${student.studentClass})</strong>: ${student.finalReason || 'تم تحديد اللبنة بناء على نتائج الرائز الرسمية'}`;
-            teacherList.appendChild(noteDiv);
         });
     }
 
@@ -1219,6 +1176,7 @@
         if (studentsList.length === 0) return;
         if (confirm("هل أنت تأكد من مسح جميع بيانات التلاميذ المسجلة؟")) {
             studentsList = [];
+            lastEvaluatedNote = '';
             localStorage.removeItem('ar_tarl_students_2026');
             renderCollectiveGrid();
         }
