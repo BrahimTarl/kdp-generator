@@ -1,382 +1,1367 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WonderDeck KDP Generator</title>
-    <!-- Tailwind CSS CDN -->
+    <title>تطبيق رائز الموضعة - اللغة العربية (النسخة الرسمية المعتمدة 2026-2027)</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkBg: '#090D16',
-                        cardBg: '#131B2E',
-                        inputBg: '#0B101D',
-                        accentPurple: '#7C3AED',
-                        accentGreen: '#10B981',
-                        accentBorder: '#1E293B'
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'Cairo', 'sans-serif']
-                    }
-                }
+    <style>
+        :root {
+            --primary: #0288d1;
+            --primary-dark: #01579b;
+            --bg: #f0f7ff;
+            --card-bg: #ffffff;
+            --btn-success: #2e7d32;
+            --btn-danger: #c62828;
+            --border-color: #b3e5fc;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: #212121;
+        }
+
+        .word-item {
+            padding: 4px 10px;
+            border-radius: 6px;
+            cursor: pointer;
+            user-select: none;
+            background: #e3f2fd;
+            transition: all 0.2s ease;
+            display: inline-block;
+            margin: 3px;
+            font-size: 1.2rem;
+            line-height: 1.9;
+            border: 1px solid #bbdefb;
+        }
+
+        .word-item:hover {
+            background: #bbdefb;
+            transform: translateY(-1px);
+        }
+
+        .word-item.error {
+            background-color: #ffebee;
+            color: #c62828;
+            text-decoration: line-through;
+            font-weight: bold;
+            border-color: #ef9a9a;
+        }
+
+        .grid-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .grid-table th, .grid-table td {
+            border: 1px solid #b3e5fc;
+            padding: 8px 4px;
+            text-align: center;
+        }
+
+        .grid-table th {
+            background-color: #0288d1;
+            color: white;
+            font-weight: 600;
+        }
+
+        .grid-table tr:nth-child(even) {
+            background-color: #f8fbff;
+        }
+
+        .status-1 {
+            background-color: #c8e6c9;
+            color: #2e7d32;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+
+        .status-0 {
+            background-color: #ffcdd2;
+            color: #c62828;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+
+        .status-na {
+            background-color: #eee;
+            color: #757575;
+            padding: 2px 6px;
+            border-radius: 4px;
+            display: inline-block;
+            font-size: 0.8rem;
+        }
+
+        @media print {
+            .no-print { display: none !important; }
+            body { 
+                background: white !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+                font-size: 11px !important;
+            }
+            .print-area { 
+                border: none !important; 
+                box-shadow: none !important; 
+                width: 100% !important; 
+                padding: 0 !important; 
+                margin: 0 !important; 
+            }
+            .overflow-x-auto { overflow: visible !important; }
+            
+            @page {
+                size: A4 portrait;
+                margin: 5mm 6mm 5mm 6mm;
+            }
+
+            .print-header-container {
+                padding-bottom: 4px !important;
+                margin-bottom: 5px !important;
+                border-bottom: 1.5px solid #0288d1 !important;
+                text-align: center !important;
+            }
+
+            .print-header-title {
+                font-size: 0.95rem !important;
+                font-weight: bold !important;
+                margin-bottom: 2px !important;
+                line-height: 1.2 !important;
+                color: #0288d1 !important;
+            }
+
+            .print-header-info {
+                font-size: 0.68rem !important;
+                margin-top: 0 !important;
+                color: #333 !important;
+            }
+
+            .stats-container {
+                padding: 3px 6px !important;
+                margin-bottom: 5px !important;
+                gap: 4px !important;
+                border: 1px solid #b3e5fc !important;
+                background-color: #f0f7ff !important;
+                border-radius: 4px !important;
+            }
+
+            .stats-container div div:first-child {
+                font-size: 0.85rem !important;
+                line-height: 1 !important;
+                font-weight: bold !important;
+            }
+
+            .stats-container div div:last-child {
+                font-size: 0.58rem !important;
+                color: #555 !important;
+            }
+
+            .grid-table {
+                width: 100% !important;
+                border-collapse: collapse !important;
+            }
+
+            .grid-table th, .grid-table td {
+                padding: 3px 2px !important;
+                font-size: 0.72rem !important;
+                height: 21px !important;
+                line-height: 1.1 !important;
+                border: 1px solid #90caf9 !important;
+            }
+
+            .grid-table th {
+                background-color: #0288d1 !important;
+                color: white !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+                font-size: 0.7rem !important;
+                padding: 4px 2px !important;
+            }
+
+            .status-1, .status-0, .status-na {
+                padding: 1px 4px !important;
+                font-size: 0.68rem !important;
+                line-height: 1.1 !important;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
+            }
+
+            .note-footer {
+                margin-top: 4px !important;
+                font-size: 0.58rem !important;
+            }
+
+            .grid-table tbody tr:nth-child(40n) {
+                page-break-after: always;
+                break-after: page;
             }
         }
-    </script>
-    <style>
-        body {
-            background-color: #090D16;
-            color: #F1F5F9;
-        }
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track { background: #0B101D; }
-        ::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
     </style>
 </head>
-<body class="p-4 md:p-8 min-h-screen">
+<body class="p-3 md:p-6 min-h-screen">
 
-    <div class="max-w-4xl mx-auto space-y-6">
+<div class="max-w-5xl mx-auto">
+    <!-- Header Section -->
+    <header class="bg-gradient-to-r from-sky-700 to-cyan-800 text-white p-5 rounded-2xl shadow-lg text-center mb-6 no-print">
+        <div class="inline-block bg-amber-400 text-slate-900 font-extrabold px-3 py-1 rounded-full text-xs mb-2">
+            النسخة الرسمية المعتمدة 2026-2027 📜
+        </div>
+        <h1 class="text-xl md:text-2xl font-bold mb-1">برنامج المعالجة المكثفة - رائز الموضعة (اللغة العربية)</h1>
+        <p class="text-sky-100 text-sm md:text-base">الموسم الدراسي 2026-2027 | إعداديات الريادة وفق دليل التقييم والتمرير الرسمـي</p>
+        <div id="main-header-school-info" class="mt-2 text-sky-200 font-semibold text-xs md:text-sm">🏫 إعداديات الريادة</div>
         
-        <!-- Header -->
-        <header class="bg-cardBg p-6 rounded-2xl border border-accentBorder shadow-xl text-center space-y-3">
-            <div class="flex items-center justify-center gap-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-accentPurple to-blue-500 flex items-center justify-center text-white text-xl font-bold">
-                    <i class="fa-solid fa-wand-magic-sparkles"></i>
-                </div>
-                <h1 class="text-2xl font-extrabold text-white tracking-wide">WonderDeck KDP Generator</h1>
-            </div>
-            <p class="text-xs text-purple-400 font-semibold">Pro Fact Book Creator & Prompt Studio for Amazon KDP</p>
-            
-            <!-- Navigation Tabs -->
-            <div class="flex justify-center gap-3 pt-2">
-                <button onclick="switchTab('concept')" id="tabConceptBtn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentPurple bg-accentPurple/20 text-white text-xs font-bold transition">
-                    <i class="fa-solid fa-book-open"></i> 1. Story Concept
-                </button>
-                <button onclick="switchTab('visual')" id="tabVisualBtn" class="flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentBorder bg-inputBg text-gray-400 text-xs font-bold hover:text-white transition">
-                    <i class="fa-solid fa-image"></i> 2. Visual Generator
-                </button>
-            </div>
-        </header>
-
-        <!-- TAB 1: STORY CONCEPT -->
-        <div id="tabConcept" class="space-y-6">
-            
-            <!-- 1. Main Book Topic -->
-            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-3">
-                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-compass text-accentPurple"></i> Main Book Topic
-                </h2>
-                <div>
-                    <label class="block text-xs text-gray-400 font-medium mb-1.5">Topic / Niche</label>
-                    <input type="text" id="mainTopic" placeholder="e.g. Ocean Animals, Space Exploration, Dinosaurs..." value="Ocean Animals" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-sm text-white focus:outline-none focus:border-accentPurple">
-                </div>
-            </div>
-
-            <!-- 2. Book Details -->
-            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
-                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-book text-blue-400"></i> Book Details
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">🌐 Language</label>
-                        <select id="language" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="English" selected>English</option>
-                            <option value="Arabic">العربية (Arabic)</option>
-                            <option value="French">French</option>
-                            <option value="Spanish">Spanish</option>
-                            <option value="German">German</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">👤 Author Name</label>
-                        <input type="text" id="authorName" placeholder="Leave blank for none" value="Lina Sparks" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">T Custom Title</label>
-                        <input type="text" id="customTitle" placeholder="Leave blank for AI choice" value="30 Amazing Facts About Ocean Animals for Kids" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                    </div>
-
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">T Custom Subtitle</label>
-                        <input type="text" id="customSubtitle" placeholder="Leave blank for AI choice" value="Fun, Weird and True Facts About Sharks, Whales, Octopuses and More" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                    </div>
-                </div>
-            </div>
-
-            <!-- 3. Audience & Tone -->
-            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
-                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-sliders text-purple-400"></i> Audience & Tone
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">👨‍👩‍👧 Target Age</label>
-                        <select id="targetAge" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="✨ Auto (Let AI Decide)">✨ Auto (Let AI Decide)</option>
-                            <option value="3-5">3 - 5 years</option>
-                            <option value="6-8" selected>6 - 8 years</option>
-                            <option value="9-12">9 - 12 years</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">💬 Book Tone</label>
-                        <select id="bookTone" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="✨ Auto (Let AI Decide)" selected>✨ Auto (Let AI Decide)</option>
-                            <option value="Fun / Playful">Fun</option>
-                            <option value="Educational">Educational</option>
-                            <option value="Exciting">Exciting</option>
-                            <option value="Funny">Funny</option>
-                            <option value="Friendly">Friendly</option>
-                            <option value="Adventure">Adventure</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 4. Book Structure -->
-            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
-                <h2 class="text-xs font-bold text-gray-300 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-layer-group text-emerald-400"></i> Book Structure
-                </h2>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">📄 Facts Per Page</label>
-                        <select id="factsPerPage" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="1">1 Fact per page</option>
-                            <option value="2">2 Facts per page</option>
-                            <option value="3">3 Facts per page</option>
-                            <option value="4" selected>4 Facts per page</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">📚 Total Pages</label>
-                        <select id="totalPages" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="10">10 Pages</option>
-                            <option value="20">20 Pages</option>
-                            <option value="30" selected>30 Pages</option>
-                            <option value="50">50 Pages</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <button onclick="generateStoryPrompt()" class="w-full py-4 bg-gradient-to-r from-accentPurple to-blue-600 hover:opacity-95 text-white font-extrabold rounded-2xl shadow-xl transition flex items-center justify-center gap-2">
-                <i class="fa-solid fa-rocket"></i>
-                <span>GENERATE STORY PROMPT</span>
+        <div class="mt-4 flex flex-wrap justify-center gap-2">
+            <button onclick="addNewStudent()" class="bg-amber-400 hover:bg-amber-500 text-slate-900 font-extrabold px-4 py-2 rounded-xl shadow transition text-sm flex items-center gap-1">
+                ➕ إضافة تلميذ(ة) جديد(ة)
             </button>
-
-            <!-- Output Prompt Box -->
-            <div id="storyPromptOutput" class="hidden bg-cardBg p-5 rounded-2xl border border-accentPurple space-y-4 text-center">
-                <h3 class="text-emerald-400 font-bold text-sm flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-circle-check"></i> Prompt Ready for ChatGPT!
-                </h3>
-                <textarea id="generatedPromptText" readonly class="w-full bg-inputBg p-3 rounded-xl border border-accentBorder text-xs font-mono text-gray-300 h-40 resize-none focus:outline-none leading-relaxed dir-ltr text-left"></textarea>
-                <button onclick="copyStoryPrompt()" class="w-full py-3.5 bg-emerald-500 hover:bg-emerald-600 text-white font-bold rounded-xl transition flex items-center justify-center gap-2">
-                    <i class="fa-regular fa-copy"></i>
-                    <span id="copyStoryBtnText">COPY STORY PROMPT</span>
-                </button>
-            </div>
-
+            <button onclick="showCollectiveGridDirectly()" class="bg-white text-sky-800 hover:bg-sky-50 font-bold px-4 py-2 rounded-xl shadow transition text-sm">
+                📊 عرض الشبكة الجماعية الموحدة (<span id="header-student-count">0</span> تلميذ)
+            </button>
         </div>
+    </header>
 
-        <!-- TAB 2: VISUAL GENERATOR -->
-        <div id="tabVisual" class="hidden space-y-6">
-            
-            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-3">
-                <label class="block text-xs text-emerald-400 font-bold uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-paste"></i> Paste ChatGPT Story Here
-                </label>
-                <textarea id="chatGptStoryInput" placeholder="Paste the text containing [Cover Page], [PAGE 1], [PAGE 2]... generated by ChatGPT here" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white h-44 focus:outline-none focus:border-emerald-400 resize-none font-mono leading-relaxed"></textarea>
-            </div>
-
-            <!-- Core Output Engine Options -->
-            <div class="bg-cardBg p-5 rounded-2xl border border-accentBorder space-y-4">
-                <h3 class="text-xs font-bold text-purple-400 uppercase tracking-wider flex items-center gap-2">
-                    <i class="fa-solid fa-sliders"></i> Core Output Engine (Crucial)
-                </h3>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Interior Page Mode</label>
-                        <select id="interiorMode" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="Full Coloring (B&W)">Full Coloring (B&W)</option>
-                            <option value="Kids Scribble Color">Kids Scribble Color</option>
-                            <option value="Full Color Professional" selected>Full Color Professional</option>
-                        </select>
-                    </div>
-
-                    <div>
-                        <label class="block text-xs text-gray-400 font-medium mb-1.5">Cover Page Mode</label>
-                        <select id="coverMode" class="w-full bg-inputBg border border-accentBorder rounded-xl p-3 text-xs text-white focus:outline-none focus:border-accentPurple">
-                            <option value="Full Color Professional" selected>Full Color Professional</option>
-                            <option value="Glossy 3D Illustration">Glossy 3D Illustration</option>
-                        </select>
-                    </div>
-                </div>
-
-                <button onclick="compileBookPrompts()" class="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-extrabold rounded-2xl shadow-xl transition flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-cubes"></i>
-                    <span>COMPILE BOOK PROMPTS</span>
-                </button>
-            </div>
-
-            <!-- Compiled Cards Grid -->
-            <div id="compiledGrid" class="hidden space-y-4">
-                <h3 class="text-sm font-bold text-gray-200">Generated Page Prompts</h3>
-                <div id="cardsContainer" class="grid grid-cols-2 md:grid-cols-3 gap-3"></div>
-            </div>
-
+    <!-- لوحة تخصيص ترويسة المؤسسة التفاعلية مع الحفظ التلقائي -->
+    <div class="bg-white p-5 rounded-2xl shadow-md border-t-4 border-cyan-600 mb-6 no-print">
+        <div class="flex justify-between items-center mb-3 cursor-pointer" onclick="toggleHeaderPanel()">
+            <h3 class="text-sm md:text-base font-bold text-sky-900 flex items-center gap-2">
+                ⚙️ لوحة تخصيص ترويسة المؤسسة والأساتذة (تُحفظ تلقائياً)
+            </h3>
+            <span id="panel-toggle-icon" class="text-sky-700 font-bold text-sm bg-sky-100 px-2 py-0.5 rounded-lg">▼ تعديل المعطيات</span>
         </div>
-
+        
+        <div id="header-custom-panel" class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-sky-100">
+            <div>
+                <label for="info-directorate-main" class="block text-xs font-bold text-slate-700 mb-1">المديرية الإقليمية:</label>
+                <input type="text" id="info-directorate-main" oninput="updateSchoolInfoFromMain(this.value, 'dir')" class="w-full p-2.5 text-xs border-2 border-sky-100 rounded-xl focus:border-sky-500 outline-none font-semibold bg-sky-50/50" placeholder="مثال: مديرية اشتوكة ايت باها">
+            </div>
+            <div>
+                <label for="info-school-main" class="block text-xs font-bold text-slate-700 mb-1">المؤسسة التعليمية:</label>
+                <input type="text" id="info-school-main" oninput="updateSchoolInfoFromMain(this.value, 'sch')" class="w-full p-2.5 text-xs border-2 border-sky-100 rounded-xl focus:border-sky-500 outline-none font-semibold bg-sky-50/50" placeholder="مثال: الثانوية الإعدادية أنس بن مالك">
+            </div>
+            <div>
+                <label for="info-teacher-main" class="block text-xs font-bold text-slate-700 mb-1">اسم الأستاذ(ة):</label>
+                <input type="text" id="info-teacher-main" oninput="updateSchoolInfoFromMain(this.value, 'tch')" class="w-full p-2.5 text-xs border-2 border-sky-100 rounded-xl focus:border-sky-500 outline-none font-semibold bg-sky-50/50" placeholder="أدخل اسم الأستاذ(ة)...">
+            </div>
+            <div class="sm:col-span-3 text-left">
+                <span class="text-[11px] text-emerald-700 font-bold bg-emerald-50 px-2.5 py-1 rounded-md border border-emerald-200">
+                    💾 يتم حفظ المعطيات تلقائياً وتطبيقها فوراً على ترويسة التطبيق وشبكة الطباعة.
+                </span>
+            </div>
+        </div>
     </div>
 
-    <script>
-        function switchTab(tab) {
-            if(tab === 'concept') {
-                document.getElementById('tabConcept').classList.remove('hidden');
-                document.getElementById('tabVisual').classList.add('hidden');
-                
-                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentPurple bg-accentPurple/20 text-white text-xs font-bold transition";
-                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentBorder bg-inputBg text-gray-400 text-xs font-bold hover:text-white transition";
-            } else {
-                document.getElementById('tabConcept').classList.add('hidden');
-                document.getElementById('tabVisual').classList.remove('hidden');
+    <!-- شاشة إدخال التلميذ -->
+    <div id="student-setup" class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-sky-600 mb-6">
+        <h2 class="text-lg font-bold text-sky-900 mb-4 border-b pb-2">إدخال بيانات التلميذ(ة) الجديد(ة)</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="student-name" class="block font-semibold text-slate-700 mb-1">اسم التلميذ(ة) الكامل:</label>
+                <input type="text" id="student-name" class="w-full p-3 border-2 border-sky-100 rounded-xl focus:border-sky-500 outline-none transition" placeholder="أدخل الاسم والنسب هنا...">
+                <div id="name-error" class="text-red-600 text-xs mt-1 hidden">⚠️ الرجاء إدخال اسم التلميذ(ة) لبدء التقييم</div>
+            </div>
+            <div>
+                <label for="student-class" class="block font-semibold text-slate-700 mb-1">القسم (اختر من القائمة):</label>
+                <select id="student-class" class="w-full p-3 border-2 border-sky-100 rounded-xl focus:border-sky-500 outline-none bg-white font-semibold">
+                    <option value="1/1">1/1</option><option value="1/2">1/2</option><option value="1/3">1/3</option><option value="1/4">1/4</option><option value="1/5">1/5</option><option value="1/6">1/6</option><option value="1/7">1/7</option>
+                    <option value="2/1">2/1</option><option value="2/2">2/2</option><option value="2/3">2/3</option><option value="2/4">2/4</option><option value="2/5">2/5</option><option value="2/6">2/6</option><option value="2/7">2/7</option>
+                    <option value="3/1">3/1</option><option value="3/2">3/2</option><option value="3/3">3/3</option><option value="3/4">3/4</option><option value="3/5">3/5</option><option value="3/6">3/6</option><option value="3/7">3/7</option>
+                </select>
+            </div>
+        </div>
+        <button onclick="startAssessment()" class="w-full mt-6 bg-sky-600 hover:bg-sky-700 text-white font-bold py-3 rounded-xl shadow-md transition text-lg">
+            بدء تمرير الرائز الرسمـي 🚀
+        </button>
+    </div>
 
-                document.getElementById('tabVisualBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-emerald-500 bg-emerald-500/20 text-white text-xs font-bold transition";
-                document.getElementById('tabConceptBtn').className = "flex items-center gap-2 px-5 py-2.5 rounded-xl border border-accentBorder bg-inputBg text-gray-400 text-xs font-bold hover:text-white transition";
-            }
-        }
-
-        function generateStoryPrompt() {
-            const topic = document.getElementById('mainTopic').value || "Ocean Animals";
-            const lang = document.getElementById('language').value;
-            const author = document.getElementById('authorName').value;
-            const title = document.getElementById('customTitle').value;
-            const subtitle = document.getElementById('customSubtitle').value;
-            const age = document.getElementById('targetAge').value;
-            const tone = document.getElementById('bookTone').value;
-            const facts = document.getElementById('factsPerPage').value;
-            const pages = document.getElementById('totalPages').value;
-
-            let promptText = `You are an expert children's educational author.
-I need you to write a complete Fact Book based on this topic: "${topic}".
-CRITICAL: This is a FACT book. The content MUST be based on real science and accurate facts, but written in an extremely fun, engaging way for kids.
-
-STRICT GUIDELINES:
-- Language: ${lang}
-- Target Age: ${age}
-- Tone: ${tone}
-- Structure: ${pages} Pages total, exactly ${facts} facts per page.`;
-
-            if(author) promptText += `\n- Author Name: ${author}`;
-            if(title) promptText += `\n- Custom Title: "${title}"`;
-            if(subtitle) promptText += `\n- Custom Subtitle: "${subtitle}"`;
-
-            promptText += `\n\nFORMATTING REQUIREMENTS:
-Provide output formatted like this:
-
-[Cover Page]
-Title: ${title || '...'}
-Subtitle: ${subtitle || '...'}
-
-[Back Cover]
-Blurb Text: ...
-Visual Metaphor Idea: ...
-
-[PAGE 1]
-Facts:
-1. ...
-Visual Metaphor Idea: (Describe a vivid visual scene for this page)
-
-(Repeat for all pages up to [PAGE ${pages}])`;
-
-            document.getElementById('generatedPromptText').value = promptText;
-            document.getElementById('storyPromptOutput').classList.remove('hidden');
-        }
-
-        function copyStoryPrompt() {
-            const text = document.getElementById('generatedPromptText').value;
-            navigator.clipboard.writeText(text).then(() => {
-                const btnText = document.getElementById('copyStoryBtnText');
-                btnText.innerText = "COPIED TO CLIPBOARD!";
-                setTimeout(() => btnText.innerText = "COPY STORY PROMPT", 1500);
-            });
-        }
-
-        function compileBookPrompts() {
-            const storyText = document.getElementById('chatGptStoryInput').value;
-            const interiorMode = document.getElementById('interiorMode').value;
-            const coverMode = document.getElementById('coverMode').value;
-
-            if(!storyText.trim()) {
-                alert("Please paste the ChatGPT output text first!");
-                return;
-            }
-
-            const container = document.getElementById('cardsContainer');
-            container.innerHTML = '';
-
-            let stylePrefix = "Kids book illustration style, ";
-            if(interiorMode.includes("B&W")) stylePrefix = "Black and white coloring book page style, clean outline art, no color shading, ";
-            else if(interiorMode.includes("Professional")) stylePrefix = "Full color professional 3D digital illustration style, vibrant lighting, ";
-
-            // Generate Cover Card
-            createCard("COVER PAGE", `${stylePrefix} eye catching cover illustration for children book topic, ${coverMode} --ar 8.5:11`, container);
-
-            // Match pages from pasted text
-            const pageMatches = storyText.match(/\[PAGE\s*\d+\]/gi) || [];
-            const pageCount = pageMatches.length > 0 ? pageMatches.length : 10;
-
-            for(let i = 1; i <= pageCount; i++) {
-                const prompt = `${stylePrefix} page ${i} children illustration, cute ocean animals theme, highly detailed, clean background --ar 8.5:11`;
-                createCard(`PAGE ${i}`, prompt, container);
-            }
-
-            document.getElementById('compiledGrid').classList.remove('hidden');
-        }
-
-        function createCard(title, prompt, container) {
-            const card = document.createElement('div');
-            card.className = "bg-cardBg p-3 rounded-xl border border-accentBorder space-y-2 text-center flex flex-col justify-between";
-            card.innerHTML = `
-                <span class="text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded uppercase border border-emerald-500/20">${title}</span>
-                <button onclick="copyCardPrompt(\`${escapeStr(prompt)}\`, this)" class="w-full py-2 bg-accentPurple hover:bg-purple-600 text-white font-bold text-xs rounded-lg transition flex items-center justify-center gap-1 mt-1">
-                    <i class="fa-regular fa-copy"></i> COPY
+    <!-- شاشة تمرير الرائز -->
+    <div id="assessment-view" class="bg-white p-6 rounded-2xl shadow-md border-t-4 border-sky-600 mb-6 hidden">
+        <!-- شريط التحكم العلوي وأزرار التنقل بين المراحل -->
+        <div class="flex flex-wrap justify-between items-center gap-2 mb-4 pb-3 border-b border-sky-100">
+            <div class="flex items-center gap-2">
+                <button onclick="goBackStage()" id="btn-back-stage" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1 shadow">
+                    ⬅ الرجوع للمرحلة السابقة
                 </button>
+                <button onclick="goNextStageManual()" id="btn-next-stage" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-1.5 rounded-lg text-xs transition flex items-center gap-1 shadow">
+                    الانتقال للمرحلة الموالية ➡
+                </button>
+                <span id="stage-badge" class="bg-sky-800 text-white font-bold px-3 py-1 rounded-lg text-xs"></span>
+            </div>
+            <span id="current-student-display" class="bg-sky-100 text-sky-800 font-bold px-3 py-1 rounded-full text-xs md:text-sm"></span>
+        </div>
+
+        <h2 id="stage-title" class="text-lg font-bold text-sky-900 mb-2"></h2>
+        
+        <div id="stage-instruction" class="bg-amber-50 border-r-4 border-amber-500 text-amber-900 p-3 rounded-lg text-sm font-medium mb-4"></div>
+
+        <!-- اختيار السند المعتمد -->
+        <div id="text-selector-box" class="bg-sky-50 p-3 rounded-xl flex flex-wrap items-center gap-3 mb-4">
+            <label for="text-choice" class="font-bold text-sky-900 text-sm">اختيار النص المعتمد للرائز:</label>
+            <select id="text-choice" onchange="changeSubText()" class="flex-1 p-2 border border-sky-200 rounded-lg text-sm bg-white font-semibold text-slate-800">
+            </select>
+        </div>
+
+        <!-- العداد والمؤقت -->
+        <div id="timer-container" class="bg-sky-50 p-3 rounded-xl border border-sky-200 flex flex-wrap justify-between items-center gap-3 mb-4">
+            <div class="flex gap-2">
+                <button id="start-timer-btn" onclick="toggleTimer()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition">
+                    ▶ بدء العداد (60 ثانية)
+                </button>
+                <button onclick="resetTimer()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-3 py-2 rounded-lg text-sm transition">
+                    إعادة ضبط
+                </button>
+            </div>
+            <div id="timer" class="text-3xl font-black text-sky-900 min-w-[60px] text-center">60</div>
+        </div>
+
+        <!-- قسم القراءة -->
+        <div id="reading-section">
+            <p class="text-xs text-slate-600 font-semibold mb-2">💡 انقر على الكلمة التي أخطأ التلميذ(ة) في قراءتها لوضع خط شطب عليها واحتساب الخطأ تلقائياً:</p>
+            <div id="word-container" class="bg-slate-50 p-4 rounded-xl border border-sky-200 min-h-[140px] max-h-[300px] overflow-y-auto mb-4"></div>
+            <div class="bg-slate-100 p-3 rounded-lg flex flex-wrap gap-4 text-sm font-semibold text-slate-700 items-center">
+                <div>إجمالي كلمات النص: <span id="total-text-words" class="text-sky-700 font-bold">0</span></div>
+                <div>الكلمات المقروءة في الدقيقة: <input type="number" id="words-read" value="0" class="w-16 p-1 border rounded text-center font-bold text-sky-900" oninput="updateCounts()"></div>
+                <div>الأخطاء: <span id="error-count" class="text-red-600 font-bold text-base">0</span></div>
+                <div>الكلمات الصحيحة السليمة: <span id="correct-count" class="text-emerald-600 font-bold text-base">0</span></div>
+            </div>
+            <p id="stage-target-hint" class="text-xs text-sky-700 font-bold mt-2"></p>
+        </div>
+
+        <!-- قسم أسئلة الفهم التفاعلي مع خانات الاختيار والحساب الآلي -->
+        <div id="comprehension-section" class="hidden bg-sky-50 p-4 rounded-xl border-r-4 border-sky-600 mb-4">
+            <h3 class="font-bold text-sky-900 mb-2 flex items-center justify-between flex-wrap gap-2">
+                <span>أسئلة الفهم الرسمية (5 أسئلة متاحة - يختبر الأستاذ التلميذ في 3 منها):</span>
+                <span id="auto-calc-badge" class="bg-sky-700 text-white text-xs px-3 py-1 rounded-full font-bold">
+                    شرط التحكم الرسمي: إجابتان صحيحتان على الأقل (2 من أصل 3 أسئلة مطروحة) ⚡
+                </span>
+            </h3>
+            <p class="text-xs text-slate-600 mb-3">📌 حدد 3 أسئلة فقط من بين الـ 5 المتاحة واطرحها شفهياً على التلميذ، ثم اختر تقييم الإجابة (صحيحة/خاطئة). شرط التحكم الرسمي: (2/3 إجابات صحيحة):</p>
+            
+            <div id="questions-list" class="space-y-3 mb-4"></div>
+
+            <!-- بطاقة النتيجة والحساب الآلي لأسئلة الفهم -->
+            <div class="bg-white p-4 rounded-xl border-2 border-sky-200 shadow-sm flex flex-wrap items-center justify-between gap-3">
+                <div class="flex items-center gap-3 flex-wrap">
+                    <span class="text-xs md:text-sm font-bold text-slate-700">تتبع التمرير (3 أسئلة):</span>
+                    <span id="asked-q-count-display" class="bg-amber-100 text-amber-900 font-bold text-xs px-2.5 py-1 rounded-lg border border-amber-300">
+                        الأسئلة المطروحة: 0 / 3
+                    </span>
+                    <span id="correct-q-count-display" class="bg-sky-100 text-sky-900 font-black text-xs px-2.5 py-1 rounded-lg border border-sky-300">
+                        الإجابات الصحيحة: 0 / 3
+                    </span>
+                </div>
+
+                <div class="flex items-center gap-2">
+                    <span class="text-xs font-bold text-slate-600">التقدير الرسمي:</span>
+                    <span id="auto-status-indicator" class="status-0 text-sm px-3 py-1">
+                        غير متحكم (0) ❌
+                    </span>
+                </div>
+
+                <select id="comp-score" class="hidden">
+                    <option value="0">غير متحكم (0)</option>
+                    <option value="1">متحكم (1)</option>
+                </select>
+            </div>
+        </div>
+
+        <!-- أزرار الإجراءات والمتابعة -->
+        <div class="flex flex-wrap justify-between items-center gap-3 mt-6 pt-4 border-t border-sky-100">
+            <button onclick="saveCurrentAssessment()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-5 py-2.5 rounded-xl shadow transition text-sm flex items-center gap-1">
+                💾 حفظ نتيجة التلميذ وتثبيت المسار
+            </button>
+            <button onclick="goNextStageAuto()" class="bg-sky-600 hover:bg-sky-700 text-white font-bold px-5 py-2.5 rounded-xl shadow transition text-sm flex items-center gap-1">
+                التنقل التلقائي وفق قرار الموضعة ➡
+            </button>
+        </div>
+    </div>
+
+    <!-- شاشة الشبكة الجماعية والتقرير الموحد -->
+    <div id="collective-grid-view" class="bg-white p-4 md:p-6 rounded-2xl shadow-md border-t-4 border-sky-600 mb-6 hidden print-area">
+        <!-- ترويسة شبكة الطباعة والتصدير -->
+        <div class="print-header-container mb-4 text-center">
+            <div class="flex justify-between items-center text-xs text-slate-600 mb-2 no-print">
+                <span id="print-header-dir">المديرية الإقليمية: غير محددة</span>
+                <span id="print-header-sch">المؤسسة: غير محددة</span>
+                <span id="print-header-tch">الأستاذ(ة): غير محدد</span>
+            </div>
+            <h2 class="print-header-title text-base md:text-lg font-bold text-sky-900">
+                شبكة التفريغ الجماعية لروائز الموضعة - اللغة العربية (2026-2027)
+            </h2>
+            <p class="print-header-info text-xs text-slate-600">
+                برنامج المعالجة المكثفة بالسلك الثانوي الإعدادي | إعداديات الريادة
+            </p>
+        </div>
+
+        <!-- ملخص الإحصائيات الشاملة -->
+        <div class="stats-container grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2 p-3 bg-sky-50 rounded-xl border border-sky-200 mb-4 text-center">
+            <div class="bg-white p-2 rounded-lg border border-sky-100">
+                <div id="stat-total" class="text-lg font-black text-sky-800">0</div>
+                <div class="text-[11px] text-slate-600 font-semibold">مجموع التلاميذ</div>
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-sky-100">
+                <div id="stat-ltc" class="text-lg font-black text-rose-700">0</div>
+                <div class="text-[11px] text-slate-600 font-semibold">قراءة النص (LTC)</div>
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-sky-100">
+                <div id="stat-ctc" class="text-lg font-black text-amber-700">0</div>
+                <div class="text-[11px] text-slate-600 font-semibold">فهم النص (CTC)</div>
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-sky-100">
+                <div id="stat-lp" class="text-lg font-black text-indigo-700">0</div>
+                <div class="text-[11px] text-slate-600 font-semibold">قراءة الفقرة (LP)</div>
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-sky-100">
+                <div id="stat-cp" class="text-lg font-black text-purple-700">0</div>
+                <div class="text-[11px] text-slate-600 font-semibold">فهم الفقرة (CP)</div>
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-sky-100">
+                <div id="stat-ltm" class="text-lg font-black text-blue-700">0</div>
+                <div class="text-[11px] text-slate-600 font-semibold">قراءة النص (LTM)</div>
+            </div>
+            <div class="bg-white p-2 rounded-lg border border-sky-100">
+                <div id="stat-ctm" class="text-lg font-black text-emerald-700">0</div>
+                <div class="text-[11px] text-slate-600 font-semibold">فهم النص (CTM)</div>
+            </div>
+        </div>
+
+        <!-- شريط أزرار التحكم بالشبكة والتصفية -->
+        <div class="flex flex-wrap justify-between items-center gap-2 mb-4 no-print">
+            <div class="flex items-center gap-2">
+                <button onclick="addNewStudent()" class="bg-amber-500 hover:bg-amber-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow transition flex items-center gap-1">
+                    ➕ إضافة تلميذ(ة)
+                </button>
+                <label for="filter-class" class="text-xs font-bold text-slate-700 mr-2">تصفية حسب القسم:</label>
+                <select id="filter-class" onchange="renderCollectiveGrid()" class="p-1.5 text-xs border border-sky-200 rounded-lg bg-white font-semibold">
+                    <option value="ALL">جميع الأقسام</option>
+                    <option value="1/1">1/1</option><option value="1/2">1/2</option><option value="1/3">1/3</option><option value="1/4">1/4</option><option value="1/5">1/5</option><option value="1/6">1/6</option><option value="1/7">1/7</option>
+                    <option value="2/1">2/1</option><option value="2/2">2/2</option><option value="2/3">2/3</option><option value="2/4">2/4</option><option value="2/5">2/5</option><option value="2/6">2/6</option><option value="2/7">2/7</option>
+                    <option value="3/1">3/1</option><option value="3/2">3/2</option><option value="3/3">3/3</option><option value="3/4">3/4</option><option value="3/5">3/5</option><option value="3/6">3/6</option><option value="3/7">3/7</option>
+                </select>
+            </div>
+
+            <div class="flex flex-wrap gap-2">
+                <button onclick="window.print()" class="bg-sky-700 hover:bg-sky-800 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow transition flex items-center gap-1">
+                    🖨️ طباعة الشبكة (PDF)
+                </button>
+                <button onclick="exportToExcelFormatted()" class="bg-emerald-700 hover:bg-emerald-800 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow transition flex items-center gap-1">
+                    📊 تصدير الشبكة المنسقة (Excel)
+                </button>
+                <button onclick="confirmClearData()" class="bg-rose-700 hover:bg-rose-800 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow transition flex items-center gap-1">
+                    🗑️ مسح الكل
+                </button>
+            </div>
+        </div>
+
+        <!-- شاشات التقرير والملاحظات الخاصة بالأستاذ خارج شبكة الطباعة -->
+        <div class="bg-amber-50/80 border border-amber-200 p-4 rounded-xl mb-4 no-print">
+            <h3 class="font-bold text-amber-900 text-xs md:text-sm mb-1 flex items-center gap-1">
+                💡 دليل الأستاذ(ة) لتشخيص وموجبات موضعة التلاميذ (للعرض والتحليل الذاتي فقط - لا يظهر عند الطباعة):
+            </h3>
+            <div id="teacher-details-list" class="text-xs text-slate-700 space-y-1 max-h-40 overflow-y-auto pt-1">
+                <!-- Dynamic breakdown notes for teachers -->
+            </div>
+        </div>
+
+        <!-- جدول تفريغ نتائج التمرير الجماعية -->
+        <div class="overflow-x-auto">
+            <table class="grid-table">
+                <thead>
+                    <tr>
+                        <th class="w-8">#</th>
+                        <th>اسم التلميذ(ة) الكامل</th>
+                        <th class="w-12">القسم</th>
+                        <th>LTC<br><span class="text-[9px] font-normal">طلاقة النص القصير</span></th>
+                        <th>CTC<br><span class="text-[9px] font-normal">فهم النص القصير</span></th>
+                        <th>LP<br><span class="text-[9px] font-normal">طلاقة الفقرة</span></th>
+                        <th>CP<br><span class="text-[9px] font-normal">فهم الفقرة</span></th>
+                        <th>LTM<br><span class="text-[9px] font-normal">طلاقة النص المتوسط</span></th>
+                        <th>CTM<br><span class="text-[9px] font-normal">فهم النص المتوسط</span></th>
+                        <th>اللبنة المستحقة</th>
+                        <th class="no-print w-20">إجراءات</th>
+                    </tr>
+                </thead>
+                <tbody id="collective-grid-body">
+                    <!-- Dynamic Rows -->
+                </tbody>
+            </table>
+        </div>
+
+        <div class="note-footer mt-3 text-[11px] text-slate-500 font-medium">
+            * الرمز (1) يعبر عن التحكم، والرمز (0) يعبر عن عدم التحكم، بينما تعبر (-) عن عدم خوض المرحلة بناء على شبكة القرار الرسمية.
+        </div>
+    </div>
+</div>
+
+<script>
+    // قاعدة البيانات الرسمية المعتمدة لروائز الموضعة 2026-2027
+    const OFFICIAL_DATABASE = {
+        short: [
+            {
+                id: 1,
+                title: "النص القصير 1: قصبة الأوداية (LTC / CTC)",
+                text: "تَقِفُ قَصَبَةُ الأُودَايَةِ عَلَى الضِّفَّةِ اليُسْرَى لِمَصَبِّ نَهْرِ أَبِي رَقْرَاقَ، شَاهِدَةً عَلَى صَفَحَاتٍ مُشْرِقَةٍ مِنْ تَارِيخِ المَغْرِبِ. أُقِيمَتْ فِي بِدَايَتِهَا حِصْنًا لِحِمَايَةِ المَدِينَةِ، ثُمَّ تَعَاقَبَتْ عَلَيْهَا دُوَلٌ مُخْتَلِفَةٌ، فَوَسَّعَتْهَا وَزَيَّنَتْهَا، حَتَّى غَدَتْ مِنْ أَجْمَلِ المَآثِرِ التَّارِيخِيَّةِ فِي الرِّبَاطِ. وَعِنْدَمَا وَفَدَ المُرِيسْكِيُّونَ إِلَى المَغْرِبِ بَعْدَ خُرُوجِهِمْ مِنَ الأَنْدَلُسِ، وَجَدَ كَثِيرٌ مِنْهُمْ فِي القَصَبَةِ مَوْطِنًا جَدِيدًا، فَتَرَكُوا فِيهَا بَصَمَاتٍ وَاضِحَةً فِي طِرَازِ بُيُوتِهَا وَأَزِقَّتِهَا وَأَبْوَابِهَا المَزْخُرَفَةِ. لِذَا يَشْعُرُ الزَّائِرُ، وَهُوَ يَتَجَوَّلُ بَيْنَ جُدْرَانِهَا البَيْضَاءِ وَأَبْوَابِهَا الزَّرْقَاءِ، بِأَنَّهُ يُسَافِرُ بَيْنَ حَضَارَتَيْنِ أَمْتَزَجَتَا فِي مَكَانٍ وَاحِدٍ. وَلَا تَقْتَصِرُ قِيمَةُ قَصَبَةِ الأُودَايَةِ عَلَى جَمَالِهَا المِعْمَارِيِّ، بَلْ تُمَثِّلُ أَيْضًا ذَاكِرَةً وَطَنِيَّةً تَحْفَظُ جَانِبًا مِنْ تَارِيخِ المَغْرِبِ، وَتَرِوِي لِلأَجْيَالِ قِصَّةَ شَعْبٍ حَافَظَ عَلَى تُرَاثِهِ عَبْرَ القُرُونِ. وَلِهَذَا يَقْصِدُهَا الزُّوَّارُ مِنْ دَاخِلِ المَغْرِبِ وَخَارِجِهِ لِتَعَرُّفِ مَكَانَتِهَا التَّارِيخِيَّةِ وَالحَضَارِيَّةِ.",
+                targetWords: 80,
+                questions: [
+                    { id: 1, text: "1. أين تقع قصبة الأوداية؟ (سؤال مفتوح)", answer: "تقع على الضفة اليسرى لمصب نهر أبي رقراق بمدينة الرباط." },
+                    { id: 2, text: "2. ما الغرض الذي أقيمت من أجله القصبة في بدايتها؟ (سؤال مفتوح)", answer: "أقيمت في بدايتها حصناً لحماية المدينة." },
+                    { id: 3, text: "3. أذكر مظهرين من المظاهر العمرانية التي تركها المورسكيون في القصبة. (سؤال مفتوح)", answer: "طراز البيوت، الأزقة، والأبواب المزخرفة والجدران البيضاء والزرقاء." },
+                    { id: 4, text: "4. من هم الذين استقروا في القصبة بعد خروجهم من الأندلس؟ اختر الجواب الصحيح.", answer: "المورسكيون", options: ["الموحدون", "المورسكيون", "الأدارسة", "المرينيون"] },
+                    { id: 5, text: "5. استقبلت القصبة المورسكيين بعد خروجهم من: اختر الجواب الصحيح.", answer: "الأندلس", options: ["إفريقيا جنوب الصحراء", "الأندلس", "المشرق العربي", "أوروبا الشرقية"] }
+                ]
+            },
+            {
+                id: 2,
+                title: "النص القصير 2: فاطمة الفهرية وجامع القرويين (LTC / CTC)",
+                text: "عُرِفَتْ فَاطِمَةُ الْفِهْرِيَّةُ بِحُبِّهَا الْعِلْمَ وَحِرْصِهَا عَلَى نَشْرِ الْمَعْرِفَةِ. وَقَدِ انْتَقَلَتْ مَعَ أُسْرَتِهَا إِلَى مَدِينَةِ فَاسَ، حَيْثُ وَرِثَتْ مَالًا بَعْدَ وَفَاةِ والدِهَا، فَقَرَّرَتْ أَنْ تُوَظِّفَهُ فِي عَمَلٍ يَنْفَعُ النَّاسَ وَيَبْقَى أَثَرُهُ. فَبَادَرَتْ إِلَى بِنَاءِ جَامِعِ الْقَرَوِيِّينَ الَّذِي أَصْبَحَ مَعَ مُرُورِ الزَّمَنِ مَرْكزًا مُهِمًّا لِلْعِلْمِ، يَقْصِدُهُ الطَّلَبَةُ وَالْعُلَمَاءُ مِنْ بُلْدَانٍ مُخْتَلِفَةٍ. وَلَمْ يَكُنْ هَذَا الْإِنْجَازُ بِنَاءَ جَامِعٍ فَقَطْ، بَلْ كَانَ بِدَايَةَ صَرْحٍ عِلْمِيٍّ أَسْهَمَ فِي نَشْرِ الْعِلْمِ وَالْمَعْرِفَةِ عَلَى مَرِّ الْقُرُونِ. وَقَدْ دَرَسَ فِي جَامِعِ الْقَرَوِيِّينَ طَلَبَةٌ كَثِيرُونَ، وَتَلَقَّوْا فِيهِ عُلُومًا مُتَنَوِّعَةً، ثُمَّ حَمَلُوا مَا تَعَلَّمُوهُ إِلَى بُلْدَانِهِمْ، فَأَسْهَمُوا فِي نَشْرِ الْعِلْمِ وَتَعْلِيمِ النَّاسِ. وَمَا زَالَ جَامِعُ الْقَرَوِيِّينَ إِلَى الْيَوْمِ مِنْ أَبْرَزِ الْمَعَالِمِ الْحَضَارِيَّةِ الَّتِي يَفْتَخِرُ بِهَا الْمَغْرِبُ.",
+                targetWords: 80,
+                questions: [
+                    { id: 1, text: "1. إِلَى أَي مَدِينَةٍ انْتَقَلَتْ فَاطِمَةُ الْفِهْرِيَّةُ مَعَ أَسْرَتِهَا ؟ (سؤال مفتوح)", answer: "انتقلت مع أسرتها إلى مدينة فاس." },
+                    { id: 2, text: "2. فِيمَ وَظَّفَتْ فَاطِمَةُ الْفِهْرِيَّةُ الْمَالَ الَّذِي وَرِثَتْهُ؟ (سؤال مفتوح)", answer: "وظفته في بناء جامع القرويين الذي أصبح مركزاً مهماً للعلم." },
+                    { id: 3, text: "3. كَيْفَ أَصْبَحَ جَامِعُ الْقَرَوِيِّينَ بَعْدَ بِنَائِهِ؟ (سؤال مفتوح)", answer: "أصبح مركزاً مهماً للعلم يقصده الطلبة والعلماء من بلدان مختلفة." },
+                    { id: 4, text: "4. مَاذَا فَعَلَ الطَّلَبَةُ بِمَا تَعَلَّمُوهُ فِي جَامِعِ الْقَرَوِيِّينَ؟ اختر الجواب الصحيح.", answer: "نقلوه إلى بلدانهم ونشروا به العلم", options: ["نقلوه إلى بلدانهم ونشروا به العلم", "اكتفوا بتطبيقه داخل جامع القرويين", "خصصوه لتعليم أفراد أسرهم فقط", "توقفوا عن تعليمه بعد انتهاء دراستهم"] },
+                    { id: 5, text: "5. وَفْقًا لِلنَّصِّ، كَانَ يَقْصِدُ جَامِعَ الْقَرَوِيِّينَ: اختر الجواب الصحيح.", answer: "الطَّلَبَةُ وَالْعُلَمَاءُ", options: ["التَّجَّارُ وَالصَّنَّاعُ", "الطَّلَبَةُ وَالْعُلَمَاءُ", "الْمُسَافِرُونَ وَالسَّيَّاحُ"] }
+                ]
+            },
+            {
+                id: 3,
+                title: "النص القصير 3: طفيلي حفل العرس (LTC / CTC)",
+                text: "كَانَ أَحَدُ الطُّفَيْلِيِّينَ يَجُوبُ شَوَارِعَ الْمَدِينَةِ بَحْثًا عَنْ مَأْدُبَةٍ يَحْضُرُهَا وَيَأْكُلُ وَجْبَةً فاخِرَةً مَجَّانًا. وَفِي أَثْنَاءِ طَوَافِهِ، عَثَرَ عَلَى حَفْلِ عُرْسٍ، وَحَاوَلَ أَنْ يَدْخُلَ، لَكِنَّ الدُّخُولَ كَانَ بِبِطَاقَاتٍ خَاصَّةٍ. أَخَذَ الطُّفَيْلِيُّ يُفَكِّرُ فِي حِيلَةٍ تُمَكِّنُهُ مِنَ الدُّخُولِ، حَتَّى اهْتَدَى إِلَى فِكْرَةٍ، بَعْدَ أَنِ اكْتَشَفَ أَنَّ لِلْعَرِيسِ أَخًا مُسَافِرًا، فَأَخْرَجَ وَرَقَةً، وَطَوَاهَا عَلَى شَكْلِ رِسَالَةٍ، وَطَرَقَ الْبَابَ قَائِلًا: إِنَّهُ صَدِيقٌ لِلْأَخِ الْغَائِبِ، وَجَاءَ بِرِسَالَةٍ مِنْهُ، فَفَتَحُوا لَهُ الْبَابَ. فَلَمَّا فَتَحَ الْعَرِيسُ الرِّسَالَةَ وَجَدَهَا خَالِيَةً، فَقَالَ لِلطُّفَيْلِيِّ: أَيْنَ الرِّسَالَةُ؟ فَقَالَ: «لَقَدْ كَانَ أَخُوكَ مَشْغُولًا، وَلَمْ يَجِدِ الْوَقْتَ لِيَكْتُبَ شَيْئًا». فَضَحِكَ الْعَرِيسُ وَمَنْ مَعَهُ، وَأَدْرَكُ أَنَّهَا حِيلَةٌ، وَأَفْسَحَ لَهُ مَكَانًا عَلَى إِحْدَى الْمَوَائِدِ، فَشَرَعَ يَأْكُلُ بِشَرَاهَةٍ.",
+                targetWords: 80,
+                questions: [
+                    { id: 1, text: "1. ما الغرض الذي كان الطفيلي يجوب من أجله شوارع المدينة؟ (سؤال مفتوح)", answer: "البحث عن مأدبة يحضرها ويأكل وجبة فاخرة مجاناً." },
+                    { id: 2, text: "2. ما العائق الذي منع الطفيلي من الدخول إلى حفل العرس؟ (سؤال مفتوح)", answer: "لأن الدخول كان ببطاقات خاصة." },
+                    { id: 3, text: "3. بماذا احتال الطفيلي ليدخل حفل العرس؟ (سؤال مفتوح)", answer: "أخرج ورقة وطواها على شكل رسالة وادعى أنه صديق للأخ الغائب وجاء برسالة منه." },
+                    { id: 4, text: "4. اكتشف العريس أن الرسالة التي جاء بها الطفيلي ليست حقيقية، لأن: اختر الجواب الصحيح.", answer: "الرسالة خالية من أي كلام مكتوب.", options: ["الرسالة خالية من أي كلام مكتوب", "الطفيلي اعترف بذلك قبل فتحها", "أخ العريس حضر في اللحظة نفسها", "الضيوف أخبروه بحقيقة الرسالة"] },
+                    { id: 5, text: "5. كان الطفيلي يبحث في شوارع المدينة عن: اختر الجواب الصحيح.", answer: "مأدبة يحضرها ويأكل منها مجاناً", options: ["صديق له", "مأدبة يحضرها ويأكل منها مجاناً", "عمل يكسب منه المال"] }
+                ]
+            }
+        ],
+        paragraph: [
+            {
+                id: 1,
+                title: "الفقرة 1: التغير المناخي والتحديات البيئية (LP / CP)",
+                text: "أَصْبَحَ التَّغَيُّرُ الْمُنَاخِيُّ مِنْ أَكْبَرِ التَّحَدِّيَاتِ الَّتِي تُوَاجِهُ الْعَالَمَ الْيَوْمَ. فَقَدِ ارْتَفَعَتْ دَرَجَاتُ الْحَرَارَةِ، وَتَكَرَّرَتْ مَوْجَاتُ الْجَفَافِ وَالْفَيَضَانَاتِ فِي مَنَاطِقَ كَثِيرَةٍ، مِمَّا أَثَّرَ فِي حَيَاةِ الْإِنْسَانِ وَالْحَيَوَانِ وَالنَّبَاتِ. وَيَرْجِعُ جُزْءٌ كَبِيرٌ مِنْ هَذِهِ الظَّاهِرَةِ إِلَى الْأَنْشِطَةِ الْبَشَرِيَّةِ، مِثْلَ حَرْقِ الْوَقُودِ وَقَطْعِ الْأَشْجَارِ وَتَلْوِيثِ الْهَوَاءِ وَالْمَاءِ. وَيُمْكِنُ لِكُلِّ فَرْدٍ أَنْ يُسْهِمَ فِي حِمَايَةِ الْبِيئَةِ مِنْ خِلَالِ الِاقْتِصَادِ فِي اسْتِعْمَالِ الْمَاءِ وَالْكَهْرَبَاءِ، وَغَرْسِ الْأَشْجَارِ، وَالْمُحَافَظَةِ عَلَى نَظَافَةِ الْمُحِيطِ، وَتَشْجِيعِ وَسَائِلِ النَّقْلِ الْأَقَلَّ تَلْوِيثًا. إِنَّ حِمَايَةَ الْبِيئَةِ مَسْؤُولِيَّةٌ مُشْتَرَكَةٌ تَضْمَنُ مُسْتَقْبَلًا أَفْضَلَ لِلْأَجْيَالِ الْقَادِمَةِ.",
+                targetWords: 70,
+                questions: [
+                    { id: 1, text: "1. مَا أَبْرَزُ التَّحَدِّيَاتِ الَّتِي تُوَاجِهُ الْعَالَمَ الْيَوْمَ؟ (سؤال مفتوح)", answer: "التغير المناخي." },
+                    { id: 2, text: "2. مَا الَّذِي تَكَرَّرَ فِي مَنَاطِقَ كَثِيرَةٍ بِسَبَبِ التَّغَيُّرِ الْمُنَاخِيِّ؟ (سؤال مفتوح)", answer: "موجات الجفاف والفيضانات." },
+                    { id: 3, text: "3. مَا الْأَنْشِطَةُ الْبَشَرِيَّةُ الَّتِي تَسَبَّبَتْ فِي التَّغَيُّرِ الْمُنَاخِيِّ حَسَبَ النَّصِّ؟ (سؤال مفتوح)", answer: "حرق الوقود، قطع الأشجار، وتلويث الهواء والماء." },
+                    { id: 4, text: "4. يُمْكِنُ لِلْفَرْدِ أَنْ يُسَاهِمَ فِي حِمَايَةِ الْبِيئَةِ بِـ: اختر الجواب الصحيح.", answer: "الاِقْتِصَادِ فِي اسْتِعْمَالِ الْمَاءِ وَالْكَهْرَبَاءِ وَغَرْسِ الْأَشْجَارِ", options: ["زِيَادَةِ اسْتِهْلَاكِ الْمَاءِ وَالْكَهْرَبَاءِ", "قَطْعِ الْأَشْجَارِ وَحَرْقِ النُّفَايَاتِ", "الاِقْتِصَادِ فِي اسْتِعْمَالِ الْمَاءِ وَالْكَهْرَبَاءِ وَغَرْسِ الْأَشْجَارِ", "زِيَادَةِ اسْتِعْمَالِ وَسَائِلِ النَّقْلِ الْمُلَوِّثَةِ"] },
+                    { id: 5, text: "5. مَاذَا تَضْمَنُ حِمَايَةُ الْبِيئَةِ لِلْأَجْيَالِ الْقَادِمَةِ؟ اختر الجواب الصحيح.", answer: "مُسْتَقْبَلًا أَفْضَلَ", options: ["زِيَادَةَ التَّلَوُّثِ", "ارْتِفَاعَ دَرَجَاتِ الْحَرَارَةِ", "مُسْتَقْبَلًا أَفْضَلَ", "تَكَرُّرَ مَوْجَاتِ الْجَفَافِ وَالْفَيَضَانَاتِ"] }
+                ]
+            },
+            {
+                id: 2,
+                title: "الفقرة 2: فن الرسم والتعبير عن المشاعر (LP / CP)",
+                text: "يَسْتَهْوِي الرَّسْمُ كَثِيرًا مِنَ التَّلَامِيذِ، لِأَنَّهُ يَمْنَحُهُمْ فُرْصَةَ التَّعْبِيرِ عَنْ أَفْكَارِهِمْ وَمَشَاعِرِهِمْ بِالْأَلْوَانِ وَالْخُطُوطِ. وَيَجِدُ بَعْضُهُمْ فِي رَسْمِ الطَّبِيعَةِ مُتْعَةً خَاصَّةً، بَيْنَمَا يُفَضِّلُ آخَرُونَ رَسْمَ الشَّخْصِيَّاتِ أَوِ الْمَعَالِمِ التَّارِيخِيَّةِ. وَيُسَاعِدُ الرَّسْمُ عَلَى تَنْمِيَةِ الْمُلَاحَظَةِ وَالْخَيَالِ وَحُسْنِ التَّرْكِيزِ، كَمَا يُكْسِبُ الْمُتَعَلِّمَ الصَّبْرَ وَالدِّقَّةَ فِي الْإِنْجَازِ. وَلِذَلِكِ تَحْرِصُ الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ عَلَى تَنْظِيمِ مَعَارِضَ فَنِّيَّةٍ وَوَرَشَاتٍ لِتَشْجِيعِ التَّلَامِيذِ عَلَى تَنْمِيَةِ مَوَاهِبِهِمْ وَالِاعْتِزَازِ بِإِنْجَازَاتِهِمْ. وَيَخْتَارُ بَعْضُ التَّلَامِيذِ الْالْتِحَاقَ بِالْأَنْدِيَةِ الْفَنِّيَّةِ فِي مُؤَسَّسَاتِهِمْ، حَيْثُ يَتَعَلَّمُونَ تِقْنِيَاتٍ جَدِيدَةً وَيَتَبَادَلُونَ الْخِبْرَاتِ وَيُطَوِّرُونَ مَوَاهِبَهُمْ فِي شَتَّى الْمَجَالَاتِ.",
+                targetWords: 70,
+                questions: [
+                    { id: 1, text: "1. بِمَاذَا يُعَبِّرُ التَّلَامِيذُ عَنْ أَفْكَارِهِمْ وَمَشَاعِرِهِمْ فِي الرَّسْمِ؟ (سؤال مفتوح)", answer: "بالألوان والخطوط." },
+                    { id: 2, text: "2. مَا الشَّيْءُ الَّذِي يَجِدُ بَعْضُ التَّلَامِيذِ مُتْعَةً خَاصَّةً فِي رَسْمِهِ؟ (سؤال مفتوح)", answer: "رسم الطبيعة." },
+                    { id: 3, text: "3. مَاذَا يُفَضِّـلُ بَعْضُ التَّلَامِيذِ أَنْ يَرْسُمُوا غَيْرَ الطَّبِيعَةِ؟ (سؤال مفتوح)", answer: "رسم الشخصيات أو المعالم التاريخية." },
+                    { id: 4, text: "4. يُسَاعِدُ الرَّسْمُ، وَفْقَ النَّصِّ، عَلَى: اختر الجواب الصحيح.", answer: "تَنْمِيَةِ الْمُلَاحَظَةِ وَالْخَيَالِ وَحُسْنِ التَّرْكِيزِ", options: ["تَنْمِيَةِ الْمُلَاحَظَةِ وَالْخَيَالِ وَحُسْنِ التَّرْكِيزِ", "تَنْمِيَةِ الذَّاكِرَةِ وَسُرْعَةِ الْحِفْظِ", "تَنْمِيَةِ الْقُوَّةِ الْبَدَنِيَّةِ وَسُرْعَةِ الْحَرَكَةِ", "تَنْمِيَةِ مَهَارَاتِ الْحِسَابِ وَحَلِّ الْمَسَائِلِ"] },
+                    { id: 5, text: "5. مَاذَا تُنَظِّمُ الْمُؤَسَّسَاتُ التَّعْلِيمِيَّةُ، وَفْقَ النَّصِّ، لِتَشْجِيعِ التَّلَامِيذِ؟ اختر الجواب الصحيح.", answer: "مَعَارِضَ فَنِّيَّةً وَوَرَشَاتٍ", options: ["مَعَارِضَ فَنِّيَّةً وَوَرَشَاتٍ", "مُسَابَقَاتٍ ثَقَافِيَّةً وَنَدَوَاتٍ عِلْمِيَّةً", "رِحْلَاتٍ مَدْرَسِيَّةً وَأَنْشِطَةً رِيَاضِيَّةً", "دَوْرَاتٍ تَكْوِينِيَّةً وَحَمَلَاتٍ تَطَوُّعِيَّةً"] }
+                ]
+            },
+            {
+                id: 3,
+                title: "الفقرة 3: متابعة المقاطع والتفكير الناقد (LP / CP)",
+                text: "يَقْضِي كَثِيرٌ مِنَ النَّاسِ، وَخَاصَّةً الشَّبَابَ، وَقْتًا طَوِيلًا فِي مُتَابَعَةِ مَقَاطِعَ وَمَوَادَّ تُقَدِّمُ مُحْتَوَى سَطْحِيًّا لَا يُضِيفُ مَعْرِفَةً وَلَا يُنَمِّي مَهَارَةً. وَتَنْتَشِرُ هَذِهِ الْمَوَادُّ بِسُرْعَةٍ لِأَنَّهَا تَعْتَمِدُ عَلَى الْإِثَارَةِ وَجَذْبِ الاِنْتِبَاهِ. وَفِي الْمُقَابِلِ، تَجِدُ الْمَوَادُّ الثَّقَافِيَّةُ وَالتَّعْلِيمِيَّةُ صُعُوبَةً فِي الاِنْتِشَارِ، عَلَى الرَّغْمِ مِنْ فَائِدَتِهَا. وَقَدْ يُؤَدِّي الاِنْشِغَالُ الْمُفْرِطُ بِهَذَا الْمُحْتَوَى إِلَى إِضَاعَةِ الْوَقْتِ وَتَشْتِيتِ الاِنْتِبَاهِ وَإِهْمَالِ الدِّرَاسَةِ. لِذَلِكَ يَحْتَاجُ التَّلْمِيذُ إِلَى حُسْنِ الاِخْتِيَارِ وَالتَّفْكِيرِ النَّاقِدِ، حَتَّى يُمَيِّزَ بَيْنَ الْمُحْتَوَى الْمُفِيدِ وَالْمُحْتَوَى التَّافِهِ، وَيُحْسِنَ اسْتِثْمَارَ وَقْتِهِ يَوْمِيًّا.",
+                targetWords: 70,
+                questions: [
+                    { id: 1, text: "1. مَا نَوْعُ الْمَقَاطِعِ وَالْمَوَادِّ الَّتِي يَقْضِي كَثِيرٌ مِنَ النَّاسِ وَقْتَهُمْ فِي مُتَابَعَتِهَا؟ (سؤال مفتوح)", answer: "مقاطع ومواد تقدم محتوى سطحياً لا يضيف معرفة ولا ينمي مهارة." },
+                    { id: 2, text: "2. إِلَى مَاذَا يَفْتَقِدُ الْمُحْتَوَى السَّطْحِيُّ؟ (سؤال مفتوح)", answer: "يفتقد للمعرفة وإضافة المهارة والفائدة." },
+                    { id: 3, text: "3. عَلَى مَاذَا يَعْتَمِدُ الْمُحْتَوَى السَّطْحِيُّ لِتَحْقِيقِ الاِنْتِشَارِ بِسُرْعَةٍ؟ (سؤال مفتوح)", answer: "يعتمد على الإثارة وجذب الانتباه." },
+                    { id: 4, text: "4. مَا الْمَوَادُّ الَّتِي تَجِدُ صُعُوبَةً فِي الاِنْتِشَارِ بَيْنَ النَّاسِ، وَفْقَ النَّصِّ؟ اختر الجواب الصحيح.", answer: "الْمَوَادُّ الثَّقَافِيَّةُ وَالتَّعْلِيمِيَّةُ", options: ["الْمَوَادُّ الثَّقَافِيَّةُ وَالتَّعْلِيمِيَّةُ", "الْمَوَادُّ التَّرْفِيهِيَّةُ وَالرِّيَاضِيَّةُ", "الْمَوَادُّ الْإِعْلَامِيَّةُ وَالْإِخْبَارِيَّةُ", "الْمَوَادُّ الْفَنِّيَّةُ وَالْوَثَائِقِيَّةُ"] },
+                    { id: 5, text: "5. مَا الَّذِي يُسَاعِدُ التَّلْمِيذَ عَلَى التَّمْيِيزِ بَيْنَ الْمُحْتَوَى الْمُفِيدِ وَالْمُحْتَوَى التَّافِهِ؟ اختر الجواب الصحيح.", answer: "حُسْنُ الاِخْتِيَارِ وَالتَّفْكِيرُ النَّاقِدُ", options: ["حُسْنُ الاِخْتِيَارِ وَالتَّفْكِيرُ النَّاقِدُ", "كَثْرَةُ مُتَابَعَةِ مَقَاطِعِ الْفِيدْيُو", "الاِعْتِمَادُ عَلَى الْمُحْتَوَى الْمُثِيرِ لِلاِنْتِبَاهِ", "قَضَاءُ وَقْتٍ أَطْوَلَ فِي تَصَفُّحِ الْمَوَاقِعِ"] }
+                ]
+            }
+        ],
+        long: [
+            {
+                id: 1,
+                title: "النص المتوسط 1: الذكاء الاصطناعي والتطور التكنولوجي (LTM / CTM)",
+                text: "يَشْهَدُ العَالَمُ فِي العَصْرِ الحَدِيثِ ثَوْرَةً تِكْنُولُوجِيَّةً هَائِلَةً بِقِيَادَةِ الذَّكَاءِ الِاصْطِنَاعِيِّ، الَّذِي أَصْبَحَ يَتَدَخَّلُ فِي مُعْظَمِ مَجَالَاتِ الحَيَاةِ اليَوْمِيَّةِ، بَدْءًا مِنَ الصِّحَّةِ وَالتَّعْلِيمِ، وُصُولًا إِلَى الصِّنَاعَةِ وَالخِدَمَاتِ اللُّوجِسْتِيَّةِ. يُسَاهِمُ الذَّكَاءِ الِاصْطِنَاعِيُّ فِي تَحْلِيلِ البَيَانَاتِ الضَّخْمَةِ بِسُرْعَةٍ فَائِقَةٍ، وَاتِّخَاذِ القَرَارَاتِ الدَّقِيقَةِ، وَتَحْسِينِ جَوْدَةِ الخِدَمَاتِ وَالتَّوَاصُلِ. وَمَعَ ذَلِكِ، يَطْرَحُ هَذَا التَّطَوُّرُ السَّرِيعُ تَحَدِّيَاتٍ جَدِيدَةً تَتَعَلَّقُ بِخُصُوصِيَّةِ البَيَانَاتِ وَالأَمْنِ الرَّقْمِيِّ وَمُسْتَقْبَلِ الوَظَائِفِ التَّقْلِيدِيَّةِ. لِذَا، يَتَوَجَّبُ عَلَى المُجْتَمَعَاتِ وَالأَفْرَادِ تَطْوِيرُ مَهَارَاتِهِمُ الرَّقْمِيَّةِ، وَالاِسْتِفَادَةُ الإِيجَابِيَّةُ مِنْ هَذِهِ التِّقْنِيَّاتِ مَعَ الاِلْتِزَامِ بِالضَّوَابِطِ الأَخْلَاقِيَّةِ وَالقَانُونِيَّةِ لِضَمَانِ خِدْمَةِ الإِنْسَانِ وَتَطْوِيرِ المُجْتَمَعِ بِشَكْلٍ آمِنٍ وَمُسْتَدَامٍ.",
+                targetWords: 90,
+                questions: [
+                    { id: 1, text: "1. اذكر مجالين من المجالات التي يتدخل فيها الذكاء الاصطناعي. (سؤال مفتوح)", answer: "الصحة، التعليم، الصناعة، والخدمات اللوجستية." },
+                    { id: 2, text: "2. ما التحديات التي يطرحها التطور السريع للذكاء الاصطناعي؟ (سؤال مفتوح)", answer: "خصوصية البيانات، الأمن الرقمي، ومستقبل الوظائف التقليدية." },
+                    { id: 3, text: "3. كيف يساهم الذكاء الاصطناعي في معالجة البيانات وتحسين الخدمات؟ (سؤال مفتوح)", answer: "بتحليل البيانات الضخمة بسرعة فائقة واتخاذ القرارات الدقيقة وتحسين التواصل." },
+                    { id: 4, text: "4. للاستفادة الإيجابية من التقنيات الحديثة يتعين على الأفراد: (سؤال مغلق)", answer: "تطوير مهاراتهم الرقمية والالتزام بالضوابط الأخلاقية", options: ["تجنب التكنولوجيا نهائيا", "تطوير مهاراتهم الرقمية والالتزام بالضوابط الأخلاقية", "إهمال الأمن الرقمي", "ترك التعليم"] },
+                    { id: 5, text: "5. تقود الثورة التكنولوجية الحديثة تقنية: (سؤال مغلق)", answer: "الذكاء الاصطناعي", options: ["الذكاء الاصطناعي", "المحركات البخارية", "الطباعة التقليدية", "الاتصالات السلكية القديمة"] }
+                ]
+            },
+            {
+                id: 2,
+                title: "النص المتوسط 2: الطاقات المتجددة والتنمية المستدامة بالمغرب (LTM / CTM)",
+                text: "يُولِي المَغْرِبُ اهْتِمَامًا كَبِيرًا لِتَطْوِيرِ قِطَاعِ الطَّاقَاتِ المُتَجَدِّدَةِ، اسْتِجَابَةً لِلتَّحَدِّيَاتِ البِيئِيَّةِ وَالمُنَاخِيَّةِ، وَرَغْبَةً فِي تَحْقِيقِ الِاسْتِقْلَالِيَّةِ الطَّاقِيَّةِ وَالتَّنْمِيَةِ المُسْتَدَامَةِ. حَيْثُ أَنْشَأَ المَغْرِبُ مَشَارِيعَ ضَخْمَةً وَرَائِدَةً عَلَى الصَّعِيدِ العَالَمِيِّ، مِثْلَ مُرَكَّبِ \"نُور وَرْزَازَاتَ\" لِلطَّاقَةِ الشَّمْسِيَّةِ وَمَحَطَّاتِ الطَّاقَةِ الرِّيحِيَّةِ بِـمُخْتَلَفِ مَنَاطِقِ المَمْلَكَةِ. تُسْهِمُ هَذِهِ المَشَارِيعُ الحَيَوِيَّةُ فِي تَقْلِيلِ الاِنْبِعَاثَاتِ الكَرْبُونِيَّةِ المُلَوِّثَةِ، وَحِمَايَةِ البِيئَةِ، وَخَلْقِ فُرَصِ شُغْلٍ جَدِيدَةٍ لِلشَّبَابِ، بِالإِضَافَةِ إِلَى تَنْشِيطِ بَحْثِ العِلْمِ وَالِابْتِكَارِ التِّكْنُولُوجِيِّ. إِنَّ الرِّهَانَ عَلَى الطَّاقَاتِ النَّظِيفَةِ يُمَثِّلُ خِيَارًا اسْتْرَاتِيجِيًّا لِبِنَاءِ مُسْتَقْبَلٍ بِيئِيٍّ آمِنٍ وَمُزْدَهِرٍ.",
+                targetWords: 90,
+                questions: [
+                    { id: 1, text: "1. اذكر مشروعا رياديا أنشأه المغرب في مجال الطاقة الشمسية. (سؤال مفتوح)", answer: "مركب \"نور ورزازات\" للطاقة الشمسية." },
+                    { id: 2, text: "2. ما هي الفوائد البيئية والاقتصادية لاستخدام الطاقات المتجددة بالمغرب؟ (سؤال مفتوح)", answer: "تقليل الانبعاثات الكربونية، حماية البيئة، وخلق فرص شغل جديدة للشباب." },
+                    { id: 3, text: "3. ما الهدف الأساسي للمغرب من الاستثمار في الطاقة النظيفة؟ (سؤال مفتوح)", answer: "تحقيق الاستقلالية الطاقية والتنمية المستدامة والتصدي للتحديات المناخية." },
+                    { id: 4, text: "4. يمثل الرهان على الطاقات النظيفة والمتجددة بالنسبة للمغرب: (سؤال مغلق)", answer: "خيارا استراتيجيا لمستقبل آمن ومزدهر", options: ["خيارا استراتيجيا لمستقبل آمن ومزدهر", "حلا مؤقتا وغير مفيد", "عائقا أمام التنمية", "مجرد تجربة عابرة"] },
+                    { id: 5, text: "5. يسهم مركب نور ورزازات في تقليل: (سؤال مغلق)", answer: "الانبعاثات الكربونية الملوثة", options: ["الانبعاثات الكربونية الملوثة", "الأراضي الزراعية", "فرص الشغل", "المساحات الخضراء"] }
+                ]
+            },
+            {
+                id: 3,
+                title: "النص المتوسط 3: أهمية القراءة والابتكار الفكري (LTM / CTM)",
+                text: "تُعْتَبَرُ القِرَاءَةُ الوَسِيلَةَ الأَسَاسِيَّةَ لِتَغْذِيَةِ العَقْلِ وَتَنْمِيَةِ الفِكْرِ الِابْتِكَارِيِّ لَدَى الأَفْرَادِ وَالمُجْتَمَعَاتِ. إِنَّ القِرَاءَةَ لَا تَقْتَصِرُ عَلَى تَحْصِيلِ المَعَارِفِ السَّطْحِيَّةِ، بَلْ تَتَجَاوَزُهَا لِتَصْقُلَ رُوحَ النَّقْدِ، وَتُنَمِّيَ مَلَكَةَ التَّحْلِيلِ الفِكْرِيِّ وَالقُدْرَةَ عَلَى حَلِّ المُشْكِلَاتِ المُعَقَّدَةِ. فَالْمُطَالَعَةُ المُسْتَمِرَّةُ تَفْتَحُ أَمَامَ المُمَتَعَلِّمِ آفَاقًا وَاسِعَةً لِلتَّعَرُّفِ عَلَى الحَضَارَاتِ وَالتَّجَارِبِ الإِنْسَانِيَّةِ المُخْتَلِفَةِ، مِمَّا يُعَزِّزُ قِيَمَ التَّسَامُحِ وَالاِنْفِتَاحِ الفِكْرِيِّ. وَفِي ظِلِّ عَصْرِ المَعْرِفَةِ وَالتِّقْنِيَةِ الحَالِيَّةِ، أَصْبَحَتِ القِرَاءَةُ المُتَنَوِّعَةُ شَرْطًا أَسَاسِيًّا لِلِابْتِكَارِ وَالتَّفَوُّقِ الدِّرَاسِيِّ وَالمِهْنِيِّ، وَبِنَاءِ أَجْيَالٍ وَاعِيَةٍ وَقَادِرَةٍ عَلَى المُسَاهَمَةِ الفَعَّالَةِ فِي بِنَاءِ نَهْضَةِ الوَطَنِ.",
+                targetWords: 90,
+                questions: [
+                    { id: 1, text: "1. كيف تتجاوز القراءة مجرد تحصيل المعارف السطحية حسب النص؟ (سؤال مفتوح)", answer: "تصقل روح النقد، وتنمي ملكة التحليل الفكري والقدرة على حل المشكلات." },
+                    { id: 2, text: "2. ما أثر المطالعة المستمرة على تعامل الفرد مع الحضارات المختلفة؟ (سؤال مفتوح)", answer: "تفتح آفاقاً للتعرف عليها وتعزز قيم التسامح والانفتاح الفكري." },
+                    { id: 3, text: "3. ما الدور الأساسي للقراءة في عصر المعرفة والتقنية؟ (سؤال مفتوح)", answer: "شرط أساسي للابتكار والتفوق الدراسي والمهني وبناء الوطن." },
+                    { id: 4, text: "4. تعتبر القراءة المتنوعة في العصر الحالي شرطا أساسيا لـ: (سؤال مغلق)", answer: "الابتكار والتفوق وبناء نهضة الوطن", options: ["العزلة والتراجع", "الابتكار والتفوق وبناء نهضة الوطن", "إهدار الوقت", "التخلي عن الدراسة"] },
+                    { id: 5, text: "5. تسهم القراءة في بناء أجيال واعية وقادرة على: (سؤال مغلق)", answer: "المساهمة الفعالة في بناء نهضة الوطن", options: ["المساهمة الفعالة في بناء نهضة الوطن", "الهجرة الخارجية", "ترك التفكير النقدي", "الانعزال عن العالم"] }
+                ]
+            }
+        ]
+    };
+
+    // إعداد مسارات ومراحل التقييم
+    const STAGE_CONFIG = {
+        LTC: {
+            code: "LTC",
+            title: "المرحلة 1: طلاقة قراءة النص القصير (LTC)",
+            instruction: "يقرأ التلميذ(ة) النص القصير خلال 60 ثانية. انقر على الكلمات الخاطئة لشطبها. شرط التحكم: قراءة 50 كلمة صحيحة على الأقل.",
+            type: "reading",
+            category: "short",
+            targetWords: 50
+        },
+        CTC: {
+            code: "CTC",
+            title: "المرحلة 2: فهم النص القصير (CTC)",
+            instruction: "طرح 3 أسئلة شفهية من أصل 5 أسئلة متاحة. شرط التحكم: إجابتان صحيحتان على الأقل (2/3).",
+            type: "comprehension",
+            category: "short"
+        },
+        LP: {
+            code: "LP",
+            title: "المرحلة 3: طلاقة قراءة الفقرة (LP)",
+            instruction: "يقرأ التلميذ(ة) الفقرة خلال 60 ثانية. شرط التحكم: قراءة 40 كلمة صحيحة على الأقل.",
+            type: "reading",
+            category: "paragraph",
+            targetWords: 40
+        },
+        CP: {
+            code: "CP",
+            title: "المرحلة 4: فهم الفقرة (CP)",
+            instruction: "طرح 3 أسئلة شفهية من أصل 5 أسئلة متاحة. شرط التحكم: إجابتان صحيحتان على الأقل (2/3).",
+            type: "comprehension",
+            category: "paragraph"
+        },
+        LTM: {
+            code: "LTM",
+            title: "المرحلة 5: طلاقة قراءة النص المتوسط (LTM)",
+            instruction: "يقرأ التلميذ(ة) النص المتوسط خلال 60 ثانية. شرط التحكم: قراءة 60 كلمة صحيحة على الأقل.",
+            type: "reading",
+            category: "long",
+            targetWords: 60
+        },
+        CTM: {
+            code: "CTM",
+            title: "المرحلة 6: فهم النص المتوسط (CTM)",
+            instruction: "طرح 3 أسئلة شفهية من أصل 5 أسئلة متاحة. شرط التحكم: إجابتان صحيحتان على الأقل (2/3).",
+            type: "comprehension",
+            category: "long"
+        }
+    };
+
+    // المتغيرات العامة للنظام
+    let studentsList = [];
+    let currentStudent = null;
+    let currentStageKey = "LTC";
+    let stageHistory = [];
+    let selectedTextId = 1;
+    let textWordsArray = [];
+    let errorsSet = new Set();
+    let timerInterval = null;
+    let timeLeft = 60;
+    let isTimerRunning = false;
+    let askedQuestions = {}; // { qId: { asked: boolean, correct: boolean } }
+
+    // التهيئة عند تحميل الصفحة
+    window.onload = function() {
+        loadStudentsFromStorage();
+        loadSchoolInfo();
+        updateHeaderStudentCount();
+    };
+
+    function loadStudentsFromStorage() {
+        try {
+            const data = localStorage.getItem("ar_tarl_2027_students");
+            studentsList = data ? JSON.parse(data) : [];
+        } catch (e) {
+            studentsList = [];
+        }
+    }
+
+    function saveStudentsToStorage() {
+        localStorage.setItem("ar_tarl_2027_students", JSON.stringify(studentsList));
+        updateHeaderStudentCount();
+    }
+
+    function updateHeaderStudentCount() {
+        const countSpan = document.getElementById("header-student-count");
+        if (countSpan) countSpan.textContent = studentsList.length;
+    }
+
+    function toggleHeaderPanel() {
+        const panel = document.getElementById("header-custom-panel");
+        const icon = document.getElementById("panel-toggle-icon");
+        if (panel.classList.contains("hidden")) {
+            panel.classList.remove("hidden");
+            icon.textContent = "▲ إخفاء التعديل";
+        } else {
+            panel.classList.add("hidden");
+            icon.textContent = "▼ تعديل المعطيات";
+        }
+    }
+
+    function updateSchoolInfoFromMain(val, key) {
+        let info = JSON.parse(localStorage.getItem("ar_tarl_2027_info") || "{}");
+        info[key] = val;
+        localStorage.setItem("ar_tarl_2027_info", JSON.stringify(info));
+        loadSchoolInfo();
+    }
+
+    function loadSchoolInfo() {
+        let info = JSON.parse(localStorage.getItem("ar_tarl_2027_info") || "{}");
+        
+        const dirInput = document.getElementById("info-directorate-main");
+        const schInput = document.getElementById("info-school-main");
+        const tchInput = document.getElementById("info-teacher-main");
+
+        if (dirInput) dirInput.value = info.dir || "";
+        if (schInput) schInput.value = info.sch || "";
+        if (tchInput) tchInput.value = info.tch || "";
+
+        const dirText = info.dir ? "المديرية الإقليمية: " + info.dir : "المديرية الإقليمية: غير محددة";
+        const schText = info.sch ? "المؤسسة: " + info.sch : "المؤسسة: غير محددة";
+        const tchText = info.tch ? "الأستاذ(ة): " + info.tch : "الأستاذ(ة): غير محدد";
+
+        document.getElementById("print-header-dir").textContent = dirText;
+        document.getElementById("print-header-sch").textContent = schText;
+        document.getElementById("print-header-tch").textContent = tchText;
+
+        const mainHeaderInfo = document.getElementById("main-header-school-info");
+        if (mainHeaderInfo) {
+            mainHeaderInfo.textContent = "🏫 " + (info.sch || "إعداديات الريادة") + (info.tch ? " | الأستاذ(ة): " + info.tch : "");
+        }
+    }
+
+    function addNewStudent() {
+        document.getElementById("student-name").value = "";
+        document.getElementById("name-error").classList.add("hidden");
+        document.getElementById("collective-grid-view").classList.add("hidden");
+        document.getElementById("assessment-view").classList.add("hidden");
+        document.getElementById("student-setup").classList.remove("hidden");
+        
+        setTimeout(() => {
+            document.getElementById("student-name").focus();
+        }, 100);
+    }
+
+    function startAssessment() {
+        const nameInput = document.getElementById("student-name");
+        const classSelect = document.getElementById("student-class");
+        const nameError = document.getElementById("name-error");
+
+        const name = nameInput.value.trim();
+        if (!name) {
+            nameError.classList.remove("hidden");
+            nameInput.focus();
+            return;
+        }
+        nameError.classList.add("hidden");
+
+        currentStudent = {
+            id: Date.now(),
+            name: name,
+            classGroup: classSelect.value,
+            scores: { LTC: null, CTC: null, LP: null, CP: null, LTM: null, CTM: null },
+            finalLevel: "قيد التمرير",
+            finalReason: "في طور التقييم"
+        };
+
+        stageHistory = [];
+        document.getElementById("student-setup").classList.add("hidden");
+        document.getElementById("collective-grid-view").classList.add("hidden");
+        document.getElementById("assessment-view").classList.remove("hidden");
+
+        initStage("LTC");
+    }
+
+    function showCollectiveGridDirectly() {
+        document.getElementById("student-setup").classList.add("hidden");
+        document.getElementById("assessment-view").classList.add("hidden");
+        document.getElementById("collective-grid-view").classList.remove("hidden");
+        renderCollectiveGrid();
+    }
+
+    function initStage(stageKey) {
+        currentStageKey = stageKey;
+        const config = STAGE_CONFIG[stageKey];
+        
+        document.getElementById("stage-badge").textContent = config.code;
+        document.getElementById("stage-title").textContent = config.title;
+        document.getElementById("stage-instruction").textContent = config.instruction;
+        document.getElementById("current-student-display").textContent = "👤 التلميذ(ة): " + currentStudent.name + " (" + currentStudent.classGroup + ")";
+
+        // تحديث خيارات اختيار النص المعتمد
+        const selector = document.getElementById("text-choice");
+        selector.innerHTML = "";
+        const textCategory = OFFICIAL_DATABASE[config.category] || [];
+        textCategory.forEach((item, index) => {
+            const opt = document.createElement("option");
+            opt.value = item.id;
+            opt.textContent = item.title;
+            selector.appendChild(opt);
+        });
+        selectedTextId = textCategory[0] ? textCategory[0].id : 1;
+        selector.value = selectedTextId;
+
+        resetTimer();
+
+        if (config.type === "reading") {
+            document.getElementById("timer-container").classList.remove("hidden");
+            document.getElementById("reading-section").classList.remove("hidden");
+            document.getElementById("comprehension-section").classList.add("hidden");
+            document.getElementById("stage-target-hint").textContent = "🎯 شرط التحكم لهذا الشوط: قراءة " + config.targetWords + " كلمة صحيحة أو أكثر في 60 ثانية.";
+            setupReadingText();
+        } else {
+            document.getElementById("timer-container").classList.add("hidden");
+            document.getElementById("reading-section").classList.add("hidden");
+            document.getElementById("comprehension-section").classList.remove("hidden");
+            setupComprehensionQuestions();
+        }
+    }
+
+    function changeSubText() {
+        selectedTextId = parseInt(document.getElementById("text-choice").value) || 1;
+        const config = STAGE_CONFIG[currentStageKey];
+        if (config.type === "reading") {
+            setupReadingText();
+        } else {
+            setupComprehensionQuestions();
+        }
+    }
+
+    function setupReadingText() {
+        errorsSet.clear();
+        const config = STAGE_CONFIG[currentStageKey];
+        const categoryList = OFFICIAL_DATABASE[config.category] || [];
+        const activeTextObj = categoryList.find(t => t.id === selectedTextId) || categoryList[0];
+
+        textWordsArray = activeTextObj ? activeTextObj.text.trim().split(/\s+/) : [];
+        
+        const container = document.getElementById("word-container");
+        container.innerHTML = "";
+
+        textWordsArray.forEach((word, index) => {
+            const span = document.createElement("span");
+            span.className = "word-item";
+            span.textContent = word;
+            span.onclick = () => toggleWordError(index, span);
+            container.appendChild(span);
+        });
+
+        document.getElementById("total-text-words").textContent = textWordsArray.length;
+        document.getElementById("words-read").value = textWordsArray.length;
+        updateCounts();
+    }
+
+    function toggleWordError(index, element) {
+        if (errorsSet.has(index)) {
+            errorsSet.delete(index);
+            element.classList.remove("error");
+        } else {
+            errorsSet.add(index);
+            element.classList.add("error");
+        }
+        updateCounts();
+    }
+
+    function updateCounts() {
+        const wordsReadInput = parseInt(document.getElementById("words-read").value) || 0;
+        const errorCount = errorsSet.size;
+        const correctCount = Math.max(0, wordsReadInput - errorCount);
+
+        document.getElementById("error-count").textContent = errorCount;
+        document.getElementById("correct-count").textContent = correctCount;
+    }
+
+    function toggleTimer() {
+        if (isTimerRunning) {
+            stopTimer();
+        } else {
+            startTimer();
+        }
+    }
+
+    function startTimer() {
+        isTimerRunning = true;
+        const btn = document.getElementById("start-timer-btn");
+        btn.textContent = "⏸ إيقاف العداد";
+        btn.className = "bg-amber-600 hover:bg-amber-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition";
+
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            document.getElementById("timer").textContent = timeLeft;
+            if (timeLeft <= 0) {
+                stopTimer();
+                alert("⏱️ انتهت الـ 60 ثانية المخصصة للشوط!");
+            }
+        }, 1000);
+    }
+
+    function stopTimer() {
+        isTimerRunning = false;
+        clearInterval(timerInterval);
+        const btn = document.getElementById("start-timer-btn");
+        btn.textContent = "▶ استئناف العداد";
+        btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition";
+    }
+
+    function resetTimer() {
+        stopTimer();
+        timeLeft = 60;
+        document.getElementById("timer").textContent = "60";
+        const btn = document.getElementById("start-timer-btn");
+        btn.textContent = "▶ بدء العداد (60 ثانية)";
+        btn.className = "bg-emerald-600 hover:bg-emerald-700 text-white font-bold px-4 py-2 rounded-lg text-sm transition";
+    }
+
+    function setupComprehensionQuestions() {
+        const config = STAGE_CONFIG[currentStageKey];
+        const categoryList = OFFICIAL_DATABASE[config.category] || [];
+        const activeTextObj = categoryList.find(t => t.id === selectedTextId) || categoryList[0];
+
+        askedQuestions = {};
+        const qContainer = document.getElementById("questions-list");
+        qContainer.innerHTML = "";
+
+        if (!activeTextObj || !activeTextObj.questions) return;
+
+        activeTextObj.questions.forEach((q) => {
+            askedQuestions[q.id] = { asked: false, correct: false };
+
+            const qBox = document.createElement("div");
+            qBox.className = "bg-white p-3 rounded-xl border border-sky-100 shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-3";
+
+            let optionsHTML = "";
+            if (q.options && q.options.length > 0) {
+                optionsHTML = `<div class="text-xs text-sky-800 mt-1 font-medium bg-sky-50 p-2 rounded-lg">خيارات السؤال: ${q.options.join(" | ")}</div>`;
+            }
+
+            qBox.innerHTML = `
+                <div class="flex-1">
+                    <div class="font-bold text-slate-800 text-sm">${q.text}</div>
+                    <div class="text-xs text-emerald-700 font-semibold mt-1">الجواب الصحيح المعتمد: ${q.answer}</div>
+                    ${optionsHTML}
+                </div>
+                <div class="flex items-center gap-2 border-t md:border-t-0 pt-2 md:pt-0 border-slate-100">
+                    <label class="inline-flex items-center gap-1 cursor-pointer bg-slate-100 px-2.5 py-1.5 rounded-lg text-xs font-bold text-slate-700">
+                        <input type="checkbox" onchange="toggleQuestionAsked(${q.id}, this.checked)" class="rounded text-sky-600 focus:ring-sky-500 w-4 h-4">
+                        طُرِح السؤال
+                    </label>
+                    <div id="q-score-btns-${q.id}" class="hidden flex items-center gap-1">
+                        <button onclick="setQuestionAnswer(${q.id}, true)" id="btn-correct-${q.id}" class="bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg transition">إجابة صحيحة ✓</button>
+                        <button onclick="setQuestionAnswer(${q.id}, false)" id="btn-wrong-${q.id}" class="bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg transition">إجابة خاطئة ✗</button>
+                    </div>
+                </div>
             `;
-            container.appendChild(card);
+            qContainer.appendChild(qBox);
+        });
+
+        updateComprehensionStatus();
+    }
+
+    function toggleQuestionAsked(qId, isAsked) {
+        askedQuestions[qId].asked = isAsked;
+        if (!isAsked) {
+            askedQuestions[qId].correct = false;
         }
 
-        function escapeStr(str) { return str.replace(/'/g, "\\'").replace(/"/g, '\\"'); }
-
-        function copyCardPrompt(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                const orig = btn.innerHTML;
-                btn.innerHTML = `<i class="fa-solid fa-check"></i> COPIED`;
-                setTimeout(() => btn.innerHTML = orig, 1200);
-            });
+        const scoreBox = document.getElementById(`q-score-btns-${qId}`);
+        if (scoreBox) {
+            if (isAsked) {
+                scoreBox.classList.remove("hidden");
+            } else {
+                scoreBox.classList.add("hidden");
+            }
         }
-    </script>
+        updateComprehensionStatus();
+    }
+
+    function setQuestionAnswer(qId, isCorrect) {
+        askedQuestions[qId].correct = isCorrect;
+
+        const btnCorrect = document.getElementById(`btn-correct-${qId}`);
+        const btnWrong = document.getElementById(`btn-wrong-${qId}`);
+
+        if (isCorrect) {
+            btnCorrect.className = "bg-emerald-600 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg shadow";
+            btnWrong.className = "bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg";
+        } else {
+            btnCorrect.className = "bg-slate-200 text-slate-700 text-xs font-bold px-2.5 py-1.5 rounded-lg";
+            btnWrong.className = "bg-rose-600 text-white text-xs font-bold px-2.5 py-1.5 rounded-lg shadow";
+        }
+        updateComprehensionStatus();
+    }
+
+    function updateComprehensionStatus() {
+        let askedCount = 0;
+        let correctCount = 0;
+
+        Object.values(askedQuestions).forEach(q => {
+            if (q.asked) {
+                askedCount++;
+                if (q.correct) correctCount++;
+            }
+        });
+
+        document.getElementById("asked-q-count-display").textContent = `الأسئلة المطروحة: ${askedCount} / 3`;
+        document.getElementById("correct-q-count-display").textContent = `الإجابات الصحيحة: ${correctCount} / 3`;
+
+        const indicator = document.getElementById("auto-status-indicator");
+        const compSelect = document.getElementById("comp-score");
+
+        // شرط التحكم الرسمي: 2 إجابات صحيحة من 3 أسئلة
+        if (correctCount >= 2) {
+            indicator.className = "status-1 text-sm px-3 py-1";
+            indicator.textContent = "متحكم (1) ✓";
+            compSelect.value = "1";
+        } else {
+            indicator.className = "status-0 text-sm px-3 py-1";
+            indicator.textContent = "غير متحكم (0) ❌";
+            compSelect.value = "0";
+        }
+    }
+
+    function evaluateCurrentStageScore() {
+        const config = STAGE_CONFIG[currentStageKey];
+        if (config.type === "reading") {
+            const wordsReadInput = parseInt(document.getElementById("words-read").value) || 0;
+            const errorCount = errorsSet.size;
+            const correctWords = Math.max(0, wordsReadInput - errorCount);
+            return correctWords >= config.targetWords ? 1 : 0;
+        } else {
+            return parseInt(document.getElementById("comp-score").value) || 0;
+        }
+    }
+
+    function saveCurrentAssessment() {
+        const score = evaluateCurrentStageScore();
+        currentStudent.scores[currentStageKey] = score;
+
+        // حساب القرار الرسمي واللبنة المستحقة
+        calculateFinalPlacement(currentStudent);
+        
+        // تحديث أو إضافة التلميذ للقائمة
+        const existingIndex = studentsList.findIndex(s => s.id === currentStudent.id);
+        if (existingIndex >= 0) {
+            studentsList[existingIndex] = currentStudent;
+        } else {
+            studentsList.push(currentStudent);
+        }
+        
+        saveStudentsToStorage();
+        alert(`💾 تم حفظ نتيجة الشوط (${currentStageKey}: ${score === 1 ? "متحكم 1" : "غير متحكم 0"}) بنجاح!`);
+    }
+
+    function goNextStageAuto() {
+        const score = evaluateCurrentStageScore();
+        currentStudent.scores[currentStageKey] = score;
+        stageHistory.push(currentStageKey);
+
+        let nextStage = null;
+
+        // شجرة القرارات المعتمدة لرائز اللغة العربية 2026-2027
+        if (currentStageKey === "LTC") {
+            nextStage = (score === 1) ? "CTC" : "LP";
+        } else if (currentStageKey === "CTC") {
+            nextStage = (score === 1) ? "LTM" : "END";
+        } else if (currentStageKey === "LP") {
+            nextStage = (score === 1) ? "CP" : "END";
+        } else if (currentStageKey === "CP") {
+            nextStage = "END";
+        } else if (currentStageKey === "LTM") {
+            nextStage = (score === 1) ? "CTM" : "END";
+        } else if (currentStageKey === "CTM") {
+            nextStage = "END";
+        }
+
+        if (nextStage === "END" || !nextStage) {
+            calculateFinalPlacement(currentStudent);
+            const existingIndex = studentsList.findIndex(s => s.id === currentStudent.id);
+            if (existingIndex >= 0) {
+                studentsList[existingIndex] = currentStudent;
+            } else {
+                studentsList.push(currentStudent);
+            }
+            saveStudentsToStorage();
+            
+            alert(`🎉 اكتمل التمرير للتلميذ(ة) ${currentStudent.name}!\nاللبنة المستحقة: ${currentStudent.finalLevel}`);
+            showCollectiveGridDirectly();
+        } else {
+            initStage(nextStage);
+        }
+    }
+
+    function goNextStageManual() {
+        const stagesList = ["LTC", "CTC", "LP", "CP", "LTM", "CTM"];
+        const currentIndex = stagesList.indexOf(currentStageKey);
+        if (currentIndex < stagesList.length - 1) {
+            stageHistory.push(currentStageKey);
+            initStage(stagesList[currentIndex + 1]);
+        } else {
+            alert("وصلت للمرحلة الأخيرة بالفعل.");
+        }
+    }
+
+    function goBackStage() {
+        if (stageHistory.length > 0) {
+            const previousStage = stageHistory.pop();
+            initStage(previousStage);
+        } else {
+            alert("أنت في مرحلة البداية.");
+        }
+    }
+
+    function calculateFinalPlacement(student) {
+        const s = student.scores;
+
+        if (s.CTM === 1) {
+            student.finalLevel = "مستوى النص المتوسط (متحكم كلياً)";
+            student.finalReason = "تحكم في طلاقة النص المتوسط وفهمه (CTM=1)";
+        } else if (s.LTM === 1) {
+            student.finalLevel = "مستوى النص القصير / المتوسط";
+            student.finalReason = "تحكم في قراءة النص المتوسط بدون فهم كافٍ (LTM=1, CTM=0)";
+        } else if (s.CTC === 1) {
+            student.finalLevel = "مستوى النص القصير (متحكم)";
+            student.finalReason = "تحكم في طلاقة وفهم النص القصير (CTC=1)";
+        } else if (s.LTC === 1) {
+            student.finalLevel = "مستوى الفقرة / النص القصير";
+            student.finalReason = "تحكم في قراءة النص القصير ولم يتحكم بالفهم (LTC=1, CTC=0)";
+        } else if (s.CP === 1) {
+            student.finalLevel = "مستوى الفقرة (متحكم)";
+            student.finalReason = "تحكم في قراءة الفقرة وفهمها (CP=1)";
+        } else if (s.LP === 1) {
+            student.finalLevel = "مستوى الكلمة / الفقرة";
+            student.finalReason = "تحكم في قراءة الفقرة ولم يتحكم بالفهم (LP=1, CP=0)";
+        } else {
+            student.finalLevel = "مستوى المبتدئ / الحرف";
+            student.finalReason = "لم يتحكم في طلاقة قراءة الفقرة (LP=0)";
+        }
+    }
+
+    function renderCollectiveGrid() {
+        const filter = document.getElementById("filter-class").value;
+        const tbody = document.getElementById("collective-grid-body");
+        tbody.innerHTML = "";
+
+        const filtered = filter === "ALL" 
+            ? studentsList 
+            : studentsList.filter(s => s.classGroup === filter);
+
+        let statLtc = 0, statCtc = 0, statLp = 0, statCp = 0, statLtm = 0, statCtm = 0;
+
+        const teacherDetails = document.getElementById("teacher-details-list");
+        teacherDetails.innerHTML = "";
+
+        filtered.forEach((s, idx) => {
+            if (s.scores.LTC === 1) statLtc++;
+            if (s.scores.CTC === 1) statCtc++;
+            if (s.scores.LP === 1) statLp++;
+            if (s.scores.CP === 1) statCp++;
+            if (s.scores.LTM === 1) statLtm++;
+            if (s.scores.CTM === 1) statCtm++;
+
+            const formatScoreCell = (val) => {
+                if (val === 1) return `<td><span class="status-1">1</span></td>`;
+                if (val === 0) return `<td><span class="status-0">0</span></td>`;
+                return `<td><span class="status-na">-</span></td>`;
+            };
+
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+                <td class="font-bold">${idx + 1}</td>
+                <td class="font-bold text-slate-800 text-right pr-2">${s.name}</td>
+                <td class="font-semibold">${s.classGroup}</td>
+                ${formatScoreCell(s.scores.LTC)}
+                ${formatScoreCell(s.scores.CTC)}
+                ${formatScoreCell(s.scores.LP)}
+                ${formatScoreCell(s.scores.CP)}
+                ${formatScoreCell(s.scores.LTM)}
+                ${formatScoreCell(s.scores.CTM)}
+                <td class="font-bold text-sky-900">${s.finalLevel || 'قيد الموضعة'}</td>
+                <td class="no-print">
+                    <button onclick="editStudent(${s.id})" class="text-xs bg-sky-100 text-sky-800 hover:bg-sky-200 p-1 rounded font-bold">تعديل</button>
+                    <button onclick="deleteStudent(${s.id})" class="text-xs bg-rose-100 text-rose-800 hover:bg-rose-200 p-1 rounded font-bold">حذف</button>
+                </td>
+            `;
+            tbody.appendChild(tr);
+
+            // إضافة تفاصيل تشخيص الأستاذ
+            const noteDiv = document.createElement("div");
+            noteDiv.className = "p-1.5 bg-white rounded border border-amber-200 mb-1";
+            noteDiv.innerHTML = `<strong>• ${s.name} (${s.classGroup}):</strong> ${s.finalLevel} — <span class="text-slate-600">${s.finalReason || ''}</span>`;
+            teacherDetails.appendChild(noteDiv);
+        });
+
+        // تحديث أعداد الإحصائيات العامة
+        document.getElementById("stat-total").textContent = filtered.length;
+        document.getElementById("stat-ltc").textContent = statLtc;
+        document.getElementById("stat-ctc").textContent = statCtc;
+        document.getElementById("stat-lp").textContent = statLp;
+        document.getElementById("stat-cp").textContent = statCp;
+        document.getElementById("stat-ltm").textContent = statLtm;
+        document.getElementById("stat-ctm").textContent = statCtm;
+    }
+
+    function editStudent(id) {
+        const student = studentsList.find(s => s.id === id);
+        if (!student) return;
+
+        currentStudent = student;
+        stageHistory = [];
+        document.getElementById("collective-grid-view").classList.add("hidden");
+        document.getElementById("assessment-view").classList.remove("hidden");
+        initStage("LTC");
+    }
+
+    function deleteStudent(id) {
+        if (confirm("هل أنت تأكد من رغبتك في حذف بيانات هذا التلميذ؟")) {
+            studentsList = studentsList.filter(s => s.id !== id);
+            saveStudentsToStorage();
+            renderCollectiveGrid();
+        }
+    }
+
+    function confirmClearData() {
+        if (confirm("⚠️ تحذير: هل أنت متأكد من مسح جميع بيانات التلاميذ المسجلة بالكامل؟")) {
+            studentsList = [];
+            saveStudentsToStorage();
+            renderCollectiveGrid();
+        }
+    }
+
+    function exportToExcelFormatted() {
+        if (studentsList.length === 0) {
+            alert("لا توجد معطيات للتصدير حالياً!");
+            return;
+        }
+
+        let info = JSON.parse(localStorage.getItem("ar_tarl_2027_info") || "{}");
+        const dir = info.dir || "المديرية الإقليمية غير محددة";
+        const sch = info.sch || "المؤسسة التعليمية غير محددة";
+        const tch = info.tch || "الأستاذ(ة) غير محدد";
+
+        const filter = document.getElementById("filter-class").value;
+        const filteredList = filter === "ALL" ? studentsList : studentsList.filter(s => s.classGroup === filter);
+
+        let rowsHTML = "";
+        filteredList.forEach((s, idx) => {
+            const formatCell = (val) => {
+                if (val === 1) return `<td style="background-color: #c8e6c9; color: #2e7d32; font-weight: bold; text-align: center;">1</td>`;
+                if (val === 0) return `<td style="background-color: #ffcdd2; color: #c62828; font-weight: bold; text-align: center;">0</td>`;
+                return `<td style="background-color: #f5f5f5; color: #757575; text-align: center;">-</td>`;
+            };
+
+            rowsHTML += `
+                <tr>
+                    <td style="text-align: center; font-weight: bold;">${idx + 1}</td>
+                    <td style="text-align: right; font-weight: bold; padding-right: 8px;">${s.name}</td>
+                    <td style="text-align: center;">${s.classGroup}</td>
+                    ${formatCell(s.scores.LTC)}
+                    ${formatCell(s.scores.CTC)}
+                    ${formatCell(s.scores.LP)}
+                    ${formatCell(s.scores.CP)}
+                    ${formatCell(s.scores.LTM)}
+                    ${formatCell(s.scores.CTM)}
+                    <td style="font-weight: bold; color: #01579b; padding: 4px;">${s.finalLevel || 'غير محدد'}</td>
+                    <td style="font-size: 11px; color: #333333; padding: 4px;">${s.finalReason || 'غير محدد'}</td>
+                </tr>
+            `;
+        });
+
+        const excelTemplate = `
+            <html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+            <head>
+                <meta charset="utf-8" />
+                <!--[if gte mso 9]>
+                <xml>
+                    <x:ExcelWorkbook>
+                        <x:ExcelWorksheets>
+                            <x:ExcelWorksheet>
+                                <x:Name>شبكة الموضعة 2026-2027</x:Name>
+                                <x:WorksheetOptions>
+                                    <x:DisplayRightToLeft/>
+                                </x:WorksheetOptions>
+                            </x:ExcelWorksheet>
+                        </x:ExcelWorksheets>
+                    </x:ExcelWorkbook>
+                </xml>
+                <![endif]-->
+                <style>
+                    body { font-family: 'Segoe UI', Tahoma, Arial, sans-serif; dir: rtl; }
+                    table { border-collapse: collapse; width: 100%; margin-top: 15px; }
+                    th { background-color: #0288d1; color: white; border: 1px solid #b3e5fc; padding: 8px; font-size: 12px; text-align: center; }
+                    td { border: 1px solid #b3e5fc; padding: 6px; font-size: 12px; }
+                    .header-title { font-size: 16px; font-weight: bold; color: #01579b; text-align: center; margin-bottom: 5px; }
+                    .header-info { font-size: 12px; color: #444; text-align: center; margin-bottom: 15px; }
+                </style>
+            </head>
+            <body dir="rtl">
+                <div class="header-title">شبكة التفريغ الجماعية لروائز الموضعة - اللغة العربية (2026-2027)</div>
+                <div class="header-info">
+                    المديرية الإقليمية: ${dir} | المؤسسة: ${sch} | الأستاذ(ة): ${tch}
+                </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width: 40px;">#</th>
+                            <th style="width: 200px;">اسم التلميذ(ة) الكامل</th>
+                            <th style="width: 60px;">القسم</th>
+                            <th>LTC<br>(طلاقة النص القصير)</th>
+                            <th>CTC<br>(فهم النص القصير)</th>
+                            <th>LP<br>(طلاقة الفقرة)</th>
+                            <th>CP<br>(فهم الفقرة)</th>
+                            <th>LTM<br>(طلاقة النص المتوسط)</th>
+                            <th>CTM<br>(فهم النص المتوسط)</th>
+                            <th style="width: 180px;">اللبنة المستحقة</th>
+                            <th style="width: 300px;">موجب القرار والسبب</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${rowsHTML}
+                    </tbody>
+                </table>
+            </body>
+            </html>
+        `;
+
+        const blob = new Blob([excelTemplate], { type: "application/vnd.ms-excel;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `شبكة_تفريغ_الموضعة_اللغة_العربية_2026_2027.xls`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+    }
+</script>
 </body>
 </html>
