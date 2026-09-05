@@ -623,6 +623,15 @@
         ]
     };
 
+    const STAGE_CONFIG = {
+        'LTC': { stageNum: 1, code: 'LTC', dbKey: 'short', targetWords: 80, title: 'المرحلة 1: النص القصير (طلاقة القراءة - LTC)', type: 'fluency' },
+        'CTC': { stageNum: 2, code: 'CTC', dbKey: 'short', targetWords: 80, title: 'المرحلة 2: النص القصير (الفهم المباشر - CTC)', type: 'comprehension' },
+        'LP':  { stageNum: 3, code: 'LP',  dbKey: 'paragraph', targetWords: 70, title: 'المرحلة 3: الفقرة (طلاقة القراءة - LP)', type: 'fluency' },
+        'CP':  { stageNum: 4, code: 'CP',  dbKey: 'paragraph', targetWords: 70, title: 'المرحلة 4: الفقرة (الفهم المباشر - CP)', type: 'comprehension' },
+        'LTM': { stageNum: 5, code: 'LTM', dbKey: 'long', targetWords: 90, title: 'المرحلة 5: النص المتوسط (طلاقة القراءة - LTM)', type: 'fluency' },
+        'CTM': { stageNum: 6, code: 'CTM', dbKey: 'long', targetWords: 90, title: 'المرحلة 6: النص المتوسط (الفهم المباشر - CTM)', type: 'comprehension' }
+    };
+
     let studentsList = [];
     let currentStudent = null;
     let currentStageKey = 'LTC'; 
@@ -630,7 +639,64 @@
     let timerInterval = null;
     let timerSeconds = 60;
     let currentQuestionsState = [];
-    let lastEvaluatedNote = ''; // Holds only the latest evaluated note
+    let lastEvaluatedNote = '';
+
+    function toggleHeaderPanel() {
+        const panel = document.getElementById('header-custom-panel');
+        const icon = document.getElementById('panel-toggle-icon');
+        if (panel.classList.contains('hidden')) {
+            panel.classList.remove('hidden');
+            icon.textContent = '▲ إخفاء التعديل';
+        } else {
+            panel.classList.add('hidden');
+            icon.textContent = '▼ تعديل المعطيات';
+        }
+    }
+
+    function updateSchoolInfoFromMain(val, field) {
+        let info = JSON.parse(localStorage.getItem('ar_tarl_school_info_2026') || '{}');
+        if (field === 'dir') info.directorate = val;
+        if (field === 'sch') info.school = val;
+        if (field === 'tch') info.teacher = val;
+        localStorage.setItem('ar_tarl_school_info_2026', JSON.stringify(info));
+        applySchoolInfoToUI(info);
+    }
+
+    function applySchoolInfoToUI(info) {
+        document.getElementById('main-header-school-info').textContent = `🏫 ${info.school || 'إعداديات الريادة'} | 📍 ${info.directorate || 'المديرية الإقليمية'} | 👨‍🏫 الأستاذ(ة): ${info.teacher || 'غير محدد'}`;
+        document.getElementById('print-header-dir').textContent = `المديرية الإقليمية: ${info.directorate || 'غير محددة'}`;
+        document.getElementById('print-header-sch').textContent = `المؤسسة: ${info.school || 'غير محددة'}`;
+        document.getElementById('print-header-tch').textContent = `الأستاذ(ة): ${info.teacher || 'غير محدد'}`;
+    }
+
+    function showCollectiveGridDirectly() {
+        document.getElementById('student-setup').classList.add('hidden');
+        document.getElementById('assessment-view').classList.add('hidden');
+        document.getElementById('collective-grid-view').classList.remove('hidden');
+        renderCollectiveGrid();
+    }
+
+    window.onload = function() {
+        const savedStudents = localStorage.getItem('ar_tarl_students_2026');
+        if (savedStudents) {
+            try {
+                studentsList = JSON.parse(savedStudents);
+            } catch (e) {
+                studentsList = [];
+            }
+        }
+        const savedInfo = localStorage.getItem('ar_tarl_school_info_2026');
+        if (savedInfo) {
+            try {
+                const info = JSON.parse(savedInfo);
+                if (info.directorate) document.getElementById('info-directorate-main').value = info.directorate;
+                if (info.school) document.getElementById('info-school-main').value = info.school;
+                if (info.teacher) document.getElementById('info-teacher-main').value = info.teacher;
+                applySchoolInfoToUI(info);
+            } catch (e) {}
+        }
+        document.getElementById('header-student-count').textContent = studentsList.length;
+    };
 
     function addNewStudent() {
         document.getElementById('student-setup').classList.remove('hidden');
